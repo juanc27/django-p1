@@ -1,0 +1,23 @@
+{% extends 'myfavteam/base.html' %}
+     
+{% block title %}MyFavTeam App{% endblock %}
+     
+{% block content %}
+    <h1> My Teams </h1>
+    {% for teams in teams %}
+    <div class="teams">
+        <h2>
+            <a href="{{teams.get_absolute_url}}">
+                {{teams.name}}
+            </a>
+        </h2>
+        <p>{{teams.description}}</p>
+        <p>
+            Posted on
+            <time datetime="{{teams.created|date:"c"}}">
+            {{teams.created|date}}
+            </time>
+        </p>
+    </div>
+    {% endfor %}
+{% endblock %}

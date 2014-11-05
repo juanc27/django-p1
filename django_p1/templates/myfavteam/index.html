@@ -1,0 +1,120 @@
+{% extends 'myfavteam/base.html' %}
+
+{% block title %} MyFavTeam App {% endblock %}
+
+{% block content %}
+    <!-- Carousell of 2 latest news and 1 social tweet-->
+      <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+          <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+          <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+          <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+          <div class="item active">
+            <img data-src="holder.js/1140x500/auto/#777:#555/text: " alt="First slide">
+            <div class="container">
+              <div class="carousel-caption">
+                {% if next_game %}
+                  <p>Next Game</p>
+                  {% if next_game.home %}
+                  <h1>{{next_game.team_id.name}} vs {{next_game.team_against.name}}</h1>
+                  {% else %}
+                  <h1>{{next_game.team_against.name}} vs {{next_game.team_id.name}}</h1>
+                  {% endif %}
+                  <p>{{next_game.tournament.name}}</p>
+                  <p>{{next_game.date}}</p> 
+                  <p>{{next_game.stadium}}, {{next_game.stadium.city}}</p>
+                {% else %}
+                  <h1>MyFavTeam vs Opponent </h1>
+                  <p>Tournament A</p>
+                  <p>Date: TBD</p>
+                  <p>Stadium, City</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <img data-src="holder.js/1140x500/auto/#666:#444/text: " alt="Second slide">
+            <div class="container">
+              <div class="carousel-caption">
+                {% if news|length > 0 %}
+                  <h1>{{latest_news}}</h1>
+                  <p>{{latest_news.website}}</p>
+                {% else %}
+                  <h1>The latest news</h1>
+                  <p>Source</p> 
+                {% endif %}
+              </div>
+            </div> 
+          </div>
+          <div class="item">
+            <img data-src="holder.js/1140x500/auto/#555:#333/text: " alt="Third slide">
+            <div class="container">
+              <div class="carousel-caption">
+                {% if last_game %}
+                  <p>Last Result</p>
+                  {% if last_game.home %}
+                  <h1>{{last_game.team_id.name}} {{last_game.team_score}} : {{last_game.team_against.name}} {{last_game.against_score}}</h1>
+                  {% else %}
+                  <h1>{{last_game.team_against.name}} {{last_game.against_score}} : {{last_game.team_id.name}} {{last_game.team_score}}</h1>
+                  {% endif %}
+                  <p>{{lastt_game.tournament.name}}</p>
+                  <p>{{last_game.date}}</p>
+                  <p>{{last_game.stadium}}, {{last_game.stadium.city}}</p>
+                {% else %}
+                  <h1>MyFavTeam vs Opponent </h1>
+                  <p>Tournament A</p>
+                  <p>Date: TBD</p>
+                  <p>Stadium, City</p>
+                {% endif %}
+              </div>
+            </div> 
+          </div>
+        </div>
+        <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+          <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+        <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+          <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+      </div>
+
+    <div class="container">  
+      <!- Example row of columns -->
+      <div class="row">
+        <div class="col-md-4">
+          <h2>News</h2>
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn btn-default" href="#" role="button">More &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+          <h2>Social</h2>
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn btn-default" href="#" role="button">More &raquo;</a></p>
+       </div>
+        <div class="col-md-4">
+          <h2>Schedule & Results</h2>
+          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+          <p><a class="btn btn-default" href="#" role="button">More &raquo;</a></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <h2>Roster</h2>
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn btn-default" href="#" role="button">More &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+          <h2>Standings</h2>
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn btn-default" href="#" role="button">More &raquo;</a></p>
+       </div>
+        <div class="col-md-4">
+          <h2>About us</h2>
+          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+          <p><a class="btn btn-default" href="#" role="button">More &raquo;</a></p>
+        </div>
+      </div>
+    </div> <!-- /container -->
+{% endblock %}

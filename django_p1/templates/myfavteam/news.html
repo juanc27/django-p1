@@ -1,0 +1,23 @@
+{% extends 'myfavteam/base.html' %}
+     
+{% block title %} News {% endblock %}
+     
+{% block content %}
+    <h1> News </h1>
+    {% for news in news %}
+    <div class="news">
+        <h2>
+            <a href="{{news.get_absolute_url}}">
+                {{news.title}}
+            </a>
+        </h2>
+        <p>{{news.description}}</p>
+        <p>
+            Posted on
+            <time datetime="{{news.date|date:"c"}}">
+            {{news.date|date}}
+            </time>
+        </p>
+    </div>
+    {% endfor %}
+{% endblock %}
