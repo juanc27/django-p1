@@ -18,9 +18,9 @@
                 {% if next_game %}
                   <p>Next Game</p>
                   {% if next_game.home %}
-                  <h1>{{next_game.team_id.name}} vs {{next_game.team_against.name}}</h1>
+                  <h1>{{next_game.team.name}} vs {{next_game.team_against.name}}</h1>
                   {% else %}
-                  <h1>{{next_game.team_against.name}} vs {{next_game.team_id.name}}</h1>
+                  <h1>{{next_game.team_against.name}} vs {{next_game.team.name}}</h1>
                   {% endif %}
                   <p>{{next_game.tournament.name}}</p>
                   <p>{{next_game.date}}</p> 
@@ -55,9 +55,9 @@
                 {% if last_game %}
                   <p>Last Result</p>
                   {% if last_game.home %}
-                  <h1>{{last_game.team_id.name}} {{last_game.team_score}} : {{last_game.team_against.name}} {{last_game.against_score}}</h1>
+                  <h1>{{last_game.team.name}} {{last_game.team_score}} : {{last_game.team_against.name}} {{last_game.against_score}}</h1>
                   {% else %}
-                  <h1>{{last_game.team_against.name}} {{last_game.against_score}} : {{last_game.team_id.name}} {{last_game.team_score}}</h1>
+                  <h1>{{last_game.team_against.name}} {{last_game.against_score}} : {{last_game.team.name}} {{last_game.team_score}}</h1>
                   {% endif %}
                   <p>{{lastt_game.tournament.name}}</p>
                   <p>{{last_game.date}}</p>

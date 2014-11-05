@@ -11,7 +11,10 @@ def index(request):
     if total_news > 9:
         total_news = 10
     news = News.objects.order_by('-date')[0:total_news]
-    latest_news = News.objects.order_by('-date')[0]
+    if total_news > 0:
+        latest_news = News.objects.order_by('-date')[0]
+    else:
+        latest_news = False
     
     #next game
     now = datetime.datetime.now()
