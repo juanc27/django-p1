@@ -87,8 +87,14 @@ TEMPLATE_DIRS = (
 
 STATIC_URL = '/static/'
 
+#Where to store image and file objects
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'myfavteam/media/')
+
 # Additional locations of static files
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'myfavteam/static'),
     os.path.join(PROJECT_ROOT, 'myfavteam/static/bootstrap'),
+    MEDIA_ROOT,
 )
+
+MEDIA_URL = '/media/'

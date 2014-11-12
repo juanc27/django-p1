@@ -85,55 +85,17 @@
       <div class="row">
         <div class="col-md-4">
           <h2>News</h2>
-          {% for news in news %}
-           <div class="row">
-               <div class="col-md-3">
-                   <a href="#">
-                      <img class="" src="{{news.image.url}}" alt="" height="62" />
-                   </a>
-               </div>
-               <div class="col-md-9">
-                   <a>{{news}}</a>
-                   <br>
-                   <div class="my-small-txt"> {{news.website}} - {{ news.date|timesince }} </div>
-               </div>
-           </div>
-           <li class="divider"></li>
-          {% endfor %}
-           <a class="btn btn-default" href="#" role="button">More &raquo;</a></p> 
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn btn-default" href="#" role="button">More &raquo;</a></p>
         </div>
         <div class="col-md-4">
           <h2>Social</h2>
-          <a class="twitter-timeline" href="https://twitter.com/hashtag/myfavteamapp" data-widget-id="532304836914475009">#myfavteamapp Tweets</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
           <p><a class="btn btn-default" href="#" role="button">More &raquo;</a></p>
        </div>
         <div class="col-md-4">
-          <h2>Schedule</h2>
-          <div class="list-group">
-            <a href="#" class="list-group-item active">
-              <h4 class="list-group-item-heading">Next Games</h4>
-            </a>
-            {% for next_games in next_games %}
-                <a href="#" class="list-group-item">
-                {% if next_games.home %}
-                    <h4 class="list-group-item-heading">@ {{next_games.team_against}}</h4>
-                {% else %}
-                    <h4 class="list-group-item-heading">vs {{next_games.team_against}}</h4>
-                {%endif%}
-                <p class="list-group-item-text">{{next_games.date}} - {{next_games.stadium}} </p>
-                </a>
-            {% endfor %}
-            <a href="#" class="list-group-item active">
-              <h4 class="list-group-item-heading">Last Results</h4>
-            </a>            
-            {% for last_games in last_games %}
-                <a href="#" class="list-group-item">
-                <h4 class="list-group-item-heading">{{last_games.team.name}} {{last_games.team_score}} : {{last_games.team_against.name}} {{last_games.against_score}}</h1>
-                <p class="list-group-item-text">{{last_games.date|date:"M/d"}}</p>
-                </a>
-            {% endfor %}
-          </div>
+          <h2>Schedule & Results</h2>
+          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
           <p><a class="btn btn-default" href="#" role="button">More &raquo;</a></p>
         </div>
       </div>

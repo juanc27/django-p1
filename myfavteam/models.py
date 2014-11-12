@@ -164,6 +164,7 @@ class Roster(models.Model):
 class TeamPicture(models.Model):
     team = models.ForeignKey('Team')
     image = models.ImageField()
+    uploaded = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         str1 = u"{} - Pic{}".format(self.team.name, self.id)

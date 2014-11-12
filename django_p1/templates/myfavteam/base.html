@@ -17,7 +17,7 @@
     <link href="{{STATIC_URL}}dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="{{STATIC_URL}}jumbotron.css" rel="stylesheet">
+    <link href="{{STATIC_URL}}myfavteam.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="{{STATIC_URL}}assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -61,15 +61,15 @@
           </ul>
           {% endif %}
         </div><!--/.nav-collapse -->
-      </div>
-    </div>
+      </div><!--container inside navbar-->
+    </div><!--navbar-->
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="container">
 
     <div class="content">
-            {% block content %}
-            {% endblock %}
+    {% block content %}
+    {% endblock %}
     </div>
 
     <hr>
