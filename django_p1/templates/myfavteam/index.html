@@ -10,24 +10,23 @@
           <li data-target="#carousel-example-generic" data-slide-to="1"></li>
           <li data-target="#carousel-example-generic" data-slide-to="2"></li>
         </ol>
-        <div class="carousel-inner">
+        <div class="carousel-inner" >
           <div class="item active">
-            <img src="{{carousel_pic_1}}" alt="First slide">
+            <!img src="{{carousel_pic_1}}" alt="First slide">
             <div class="container">
               <div class="carousel-caption">
                 {% if next_game %}
                   <p>Next Game</p>
                   {% if next_game.home %}
-                  <h1>{{next_game.team.name}} vs {{next_game.team_against.name}}</h1>
+                  <h2>{{next_game.team.name}} vs {{next_game.team_against.name}}</h2>
                   {% else %}
-                  <h1>{{next_game.team_against.name}} vs {{next_game.team.name}}</h1>
+                  <h2>{{next_game.team_against.name}} vs {{next_game.team.name}}</h2>
                   {% endif %}
-                  <p>{{next_game.tournament.name}}</p>
                   <p>{{next_game.date}}</p> 
                   <p>{{next_game.stadium}}, {{next_game.stadium.city}}</p>
                 {% else %}
-                  <h1>MyFavTeam vs Opponent </h1>
-                  <p>Tournament A</p>
+                  <h2>MyFavTeam vs Opponent </h2>
+                  <!p>Tournament A<!/p>
                   <p>Date: TBD</p>
                   <p>Stadium, City</p>
                 {% endif %}
@@ -35,36 +34,35 @@
             </div>
           </div>
           <div class="item">
-            <img src="{{carousel_pic_2}}" alt="Second slide" height="500" width="1140">
+            <!img src="{{carousel_pic_2}}" alt="Second slide" height="500" width="1140">
             <div class="container">
               <div class="carousel-caption">
                 {% if news|length > 0 %}
-                  <h1>{{latest_news}}</h1>
+                  <h2>{{latest_news}}</h2>
                   <p>{{latest_news.website}}</p>
                 {% else %}
-                  <h1>The latest news</h1>
+                  <h2>The latest news</h2>
                   <p>Source</p> 
                 {% endif %}
               </div>
             </div> 
           </div>
           <div class="item">
-            <img src="{{carousel_pic_3}}" alt="Third slide" height="500" width="1140">
+            <!img src="{{carousel_pic_3}}" alt="Third slide" height="500" width="1140">
             <div class="container">
               <div class="carousel-caption">
                 {% if last_game %}
                   <p>Last Result</p>
                   {% if last_game.home %}
-                  <h1>{{last_game.team.name}} {{last_game.team_score}} : {{last_game.team_against.name}} {{last_game.against_score}}</h1>
+                  <h2>{{last_game.team.name}} {{last_game.team_score}} : {{last_game.team_against.name}} {{last_game.against_score}}</h2>
                   {% else %}
-                  <h1>{{last_game.team_against.name}} {{last_game.against_score}} : {{last_game.team.name}} {{last_game.team_score}}</h1>
+                  <h2>{{last_game.team_against.name}} {{last_game.against_score}} : {{last_game.team.name}} {{last_game.team_score}}</h2>
                   {% endif %}
-                  <p>{{lastt_game.tournament.name}}</p>
                   <p>{{last_game.date}}</p>
                   <p>{{last_game.stadium}}, {{last_game.stadium.city}}</p>
                 {% else %}
-                  <h1>MyFavTeam vs Opponent </h1>
-                  <p>Tournament A</p>
+                  <h2>MyFavTeam vs Opponent </h2>
+                  <!p>Tournament A</p>
                   <p>Date: TBD</p>
                   <p>Stadium, City</p>
                 {% endif %}
@@ -106,7 +104,6 @@
           <h2>Social</h2>
           <a class="twitter-timeline" href="https://twitter.com/hashtag/myfavteamapp" data-widget-id="532304836914475009">#myfavteamapp Tweets</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-          <p><a class="btn btn-default" href="#" role="button">More &raquo;</a></p>
        </div>
         <div class="col-md-4">
           <h2>Schedule</h2>
@@ -140,18 +137,106 @@
       <div class="row">
         <div class="col-md-4">
           <h2>Roster</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">More &raquo;</a></p>
+          <table class="table table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Age</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Mark Otto</td>
+                <td>POR</td>
+                <td>14</td>
+              </tr>
+              <tr>
+                <td>Jacob Thorn</td>
+                <td>DEF</td>
+                <td>21</td>
+              </tr>
+              <tr>
+                <td>Larry Flinn</td>
+                <td>MED</td>
+                <td>31</td>
+              </tr>
+            </tbody>
+          </table> 
         </div>
         <div class="col-md-4">
           <h2>Standings</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">More &raquo;</a></p>
+          <table class="table table-striped table-condensed">
+            <thead>
+              <tr>
+                <th>Team</th>
+                <th>W</th>
+                <th>L</th>
+                <th>PCT</th>
+                <th>GB</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Memphis</td>
+                <td>7</td>
+                <td>1</td>
+                <td>.875</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Houston</td>
+                <td>7</td>
+                <td>1</td>
+                <td>.875</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Golden State</td>
+                <td>5</td>
+                <td>2</td>
+                <td>.714</td>
+                <td>1½</td>
+              </tr>
+            </tbody>
+          </table>
        </div>
         <div class="col-md-4">
-          <h2>About us</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn btn-default" href="#" role="button">More &raquo;</a></p>
+          <h2>Stats</h2>
+          <table class="table table-striped table-condensed">
+            <thead>
+              <tr>
+                <th>Player</th>
+                <th>PPG</th>
+                <th>RPG</th>
+                <th>APG</th>
+                <th>MPG</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Stephen Curry, PG</td>
+                <td>26.0</td>
+                <td>6.1</td>
+                <td>6.9</td>
+                <td>35.0</td>
+              </tr>
+              <tr>
+                <td>Klay Thompson, SG</td>
+                <td>24.7</td>
+                <td>3.0</td>
+                <td>3.3</td>
+                <td>34.5</td>
+              </tr>
+              <tr>
+                <td>Draymond Green, SF</td>
+                <td>13.6</td>
+                <td>7.1</td>
+                <td>2.6</td>
+                <td>33.1</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div> <!-- /container -->
