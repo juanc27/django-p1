@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from myfavteam.models import *
 import datetime
+import copy
 
 class Carousel:
     '''Object to build all data, task for the carousel on index.html'''
@@ -41,7 +42,7 @@ class Games:
                             'team_score': 99, 'against_score': 100,
                            } 
                           ]
-        self.last_games = list(self.next_games)
+        self.last_games = copy.deepcopy(self.next_games)
         self.last_games.reverse()
         self.last_games[0]['date'] = now.replace(year=now.year-1)
         self.last_games[1]['date'] = now.replace(year=now.year-2)
