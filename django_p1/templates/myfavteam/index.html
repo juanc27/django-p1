@@ -30,13 +30,8 @@
             <!-img src="{{carousel_pic_1}}" alt="Second slide" height="500" width="1140">
             <div class="container">
               <div class="carousel-caption">
-                {% if news|length > 0 %}
                   <h2>{{latest_news}}</h2>
                   <p>{{latest_news.website}}</p>
-                {% else %}
-                  <h2>The latest news</h2>
-                  <p>Source</p> 
-                {% endif %}
               </div>
             </div> 
           </div>
