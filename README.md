@@ -3,7 +3,7 @@ django-p1
 
 MyFavTeam web app
 
-This web app provides a portal for users to follow their favorite sport team and includes a framework that periodically collects news, stats and tweeter feeds from different sources. 
+This web app provides a portal for users to follow their favorite sport team and includes a framework that periodically collects news, stats and twitter feeds from different sources. 
 
 Requirements:
 Django (1.7.1)
@@ -14,7 +14,7 @@ BeatifulSoup4
 Version 0.1
 The current views contain some fixed data that allows you to vizualize how the information and sections are organized 
 
-After downlod, run 
+After download, run 
 ./manage.py syncdb
 ./manage runserver
 
