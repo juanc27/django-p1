@@ -33,6 +33,11 @@ def index(request, team = -1):
     resp_dict['last_game'] = last_games[0]      
     resp_dict['last_games']= last_games
 
+    #Roster
+    r = RosterList()
+    roster = r.get_roster(3)
+    resp_dict['roster'] = roster
+
     return render(request, 'myfavteam/index.html', resp_dict)
 
 def news(request):
@@ -113,7 +118,10 @@ class NewsList:
     '''Object to build all data, task for the carousel on index.html'''
     def __init__(self):
         now = datetime.datetime.now()
-        now2 = now.replace(minute=now.minute-10)
+        if now.minute > 10:
+            now2 = now.replace(minute=now.minute-10)
+        else:
+            now2 = now.replace(minute=0)
             
         self.news = [{'team': 'MyFavTeam',
                       'title': 'News1: MyFavTeam App collectis news from different web sources',
@@ -121,7 +129,7 @@ class NewsList:
                       'link' : '#',
                       'author': 'myself',
                       'website': 'website1.com',
-                      'image': {'url': 'holder.js/110x62/auto/#666:#999/text: image or logo'},
+                      'image': {'url': 'holder.js/90x62/auto/#666:#999/text: image'},
                      },
                      {'team': 'MyFavTeam',
                     'title': 'News2: MyFavTeam App also collectis stats from a trusted web source',
@@ -129,7 +137,7 @@ class NewsList:
                       'link' : '#',
                       'author': 'myself2',
                       'website': 'website2.com',
-                      'image': {'url': 'holder.js/110x62/auto/#555:#888/text: image or logo'},
+                      'image': {'url': 'holder.js/90x62/auto/#555:#888/text: image'},
                      },
                     ]
 
@@ -146,3 +154,64 @@ class NewsList:
             ret_list[0:amount] = query[0:amount]
             return ret_list
 
+class RosterList:
+    def __init__(self):
+        self.players = [{'team': 'MyFavTeam',
+                         'player' : {'first_name': 'John',
+                                     'last_name': 'Doe',
+                                     'position': 'G',
+                                     'birthdate' : datetime.date(1984, 11, 18),
+                                     'twitter' : '@johndoe',
+                                     'facebook' : "https://www.facebook.com/JhonDoe",
+                                     'height' : 6.1,
+                                     'weight' : 180.0,
+                                     'image': {'url': 
+                                                  'holder.js/300x180/auto/#666:#999/text: image'},
+                                     'salary' : 1200000,
+                                     'age': 30,
+                                    },
+                        },
+                        {'team': 'MyFavTeam',
+                         'player' : {'first_name': 'David',
+                                     'last_name': 'Smith',
+                                     'position': 'F',
+                                     'birthdate' : datetime.date(1986, 11, 18),
+                                     'twitter' : '@davidsmith',
+                                     'facebook' : "https://www.facebook.com/DavidSmith",
+                                     'height' : 6.7,
+                                     'weight' : 210.0,
+                                     'image': {'url':
+                                                  'holder.js/300x180/auto/#666:#999/text: image'},
+                                     'salary' : 1100000,
+                                     'age': 28,
+                                    },
+                        },
+                        {'team': 'MyFavTeam',
+                         'player' : {'first_name': 'Tim',
+                                     'last_name': 'Brown',
+                                     'position': 'C',
+                                     'birthdate' : datetime.date(1988, 11, 18),
+                                     'twitter' : '@timbrown',
+                                     'facebook' : "https://www.facebook.com/TimBrown",
+                                     'height' : 6.11,
+                                     'weight' : 230.0,
+                                     'image': {'url':
+                                                  'holder.js/300x180/auto/#666:#999/text: image'},
+                                     'salary' : 1000000,
+                                     'age': 26,
+                                    },
+                        },
+                       ]
+
+    def get_roster(self, amount):
+        query = Roster.objects.order_by('salary')
+        ret_list = list(self.players)
+
+        count = query.count()
+        if count < amount:
+            amount = count
+        if amount >= len(ret_list):
+            return query[0:amount]
+        else:
+            ret_list[0:amount] = query[0:amount]
+            return ret_list

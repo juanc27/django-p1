@@ -30,7 +30,7 @@
             <!-img src="{{carousel_pic_1}}" alt="Second slide" height="500" width="1140">
             <div class="container">
               <div class="carousel-caption">
-                  <h2>{{latest_news}}</h2>
+                  <h2>{{latest_news.title}}</h2>
                   <p>{{latest_news.website}}</p>
               </div>
             </div> 
@@ -72,7 +72,7 @@
                    </a>
                </div>
                <div class="col-md-9">
-                   <a>{{news}}</a>
+                   <a>{{news.title}}</a>
                    <br>
                    <div class="my-small-txt"> {{news.website}} - {{ news.date|timesince }} </div>
                </div>
@@ -124,24 +124,18 @@
                 <th>Name</th>
                 <th>Position</th>
                 <th>Age</th>
+                <th>Salary</th>
               </tr>
             </thead>
             <tbody>
+              {% for player in roster %}
               <tr>
-                <td>Mark Otto</td>
-                <td>POR</td>
-                <td>14</td>
+                <td>{{player.player.first_name}} {{player.player.last_name}}</td>
+                <td>{{player.player.position}}</td>
+                <td>{{player.player.age}}</td>
+                <td>{{player.player.salary|floatformat}}</td>
               </tr>
-              <tr>
-                <td>Jacob Thorn</td>
-                <td>DEF</td>
-                <td>21</td>
-              </tr>
-              <tr>
-                <td>Larry Flinn</td>
-                <td>MED</td>
-                <td>31</td>
-              </tr>
+              {% endfor %}
             </tbody>
           </table> 
         </div>

@@ -102,7 +102,7 @@ class Position(models.Model):
         ordering = ['-created']
 
     def __unicode__(self):
-        return u'%s' % self.name
+        return u'%s' % self.acronym
 
     #def get_absolute_url(self):
     # return reverse('myfavteam.views.team', args=[self.team_name])
@@ -112,11 +112,15 @@ class Player(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     birthdate = models.DateField()
-    twitter = models.CharField(max_length=100)
-    facebook = models.CharField(max_length=250)
+    twitter = models.CharField(max_length=100, null=True)
+    facebook = models.CharField(max_length=250, null=True)
     height = models.FloatField(default=0.0)
     weight = models.FloatField(default=0.0)
     created = models.DateTimeField(auto_now_add=True)
+    #we shouldn't use age, but sometimes is easier to fill than bday
+    age = models.IntegerField(default=0)
+    image = models.ImageField(null=True,blank=True)
+    salary = models.IntegerField(default=0)
 
     class Meta:
         ordering = ['-last_name']
