@@ -34,9 +34,19 @@ def index(request, team = -1):
     resp_dict['last_games']= last_games
 
     #Roster
-    r = RosterList()
+    r = PlayerList()
     roster = r.get_roster(3)
     resp_dict['roster'] = roster
+
+    #Standings
+    s = StandingList()
+    standings = s.get_standings(5)
+    resp_dict['standings'] = standings 
+
+    #Stats
+    st = StatsList()
+    stats = st.get_stats(3)
+    resp_dict['stats'] = stats
 
     return render(request, 'myfavteam/index.html', resp_dict)
 
@@ -66,6 +76,24 @@ class Carousel:
         for i in range(self.num_of_pics):
             str = "carousel_pic_{}".format(i)
             resp[str] = self.pic[i]
+
+def get_query_or_def_values(amount, query, ret_list):
+    assert(amount > 0)
+    lenght = len(ret_list)
+    assert(lenght > 0)
+
+    try:
+        count = query.count()
+    except:
+        count = 0
+
+    if count >= lenght:
+        return query[0:amount]
+    else:
+        ret_list[0:count] = query[0:count]
+        if amount > 0:
+            del ret_list[amount:]
+        return ret_list
 
 class Games:
     '''Object to build all data, task for the carousel on index.html'''
@@ -99,14 +127,7 @@ class Games:
             query = Schedule.objects.filter(date__lt=now)
             ret_list = list(self.last_games)
 
-        count = query.count()
-        if count < amount:
-            amount = count
-        if amount >= len(ret_list):
-            return query[0:amount]
-        else:
-            ret_list[0:amount] = query[0:amount]
-            return ret_list
+        return get_query_or_def_values(amount, query, ret_list)
 
     def get_next_games(self, amount):
         return self.get_games(amount, next=True)
@@ -145,73 +166,123 @@ class NewsList:
         query = News.objects.order_by('-date')
         ret_list = list(self.news)
 
-        count = query.count()
-        if count < amount:
-            amount = count
-        if amount >= len(ret_list):
-            return query[0:amount]
-        else:
-            ret_list[0:amount] = query[0:amount]
-            return ret_list
+        return get_query_or_def_values(amount, query, ret_list)
 
-class RosterList:
+class PlayerList:
     def __init__(self):
         self.players = [{'team': 'MyFavTeam',
-                         'player' : {'first_name': 'John',
-                                     'last_name': 'Doe',
-                                     'position': 'G',
-                                     'birthdate' : datetime.date(1984, 11, 18),
-                                     'twitter' : '@johndoe',
-                                     'facebook' : "https://www.facebook.com/JhonDoe",
-                                     'height' : 6.1,
-                                     'weight' : 180.0,
-                                     'image': {'url': 
-                                                  'holder.js/300x180/auto/#666:#999/text: image'},
-                                     'salary' : 1200000,
-                                     'age': 30,
-                                    },
+                         'first_name': 'John',
+                         'last_name': 'Doe',
+                         'position': 'G',
+                         'birthdate' : datetime.date(1984, 11, 18),
+                         'twitter' : '@johndoe',
+                         'facebook' : "https://www.facebook.com/JhonDoe",
+                         'height' : 6.1,
+                         'weight' : 180.0,
+                         'image': {'url': 'holder.js/300x180/auto/#666:#999/text: image'},
+                         'salary' : 1200000,
+                         'age': 30,
                         },
                         {'team': 'MyFavTeam',
-                         'player' : {'first_name': 'David',
-                                     'last_name': 'Smith',
-                                     'position': 'F',
-                                     'birthdate' : datetime.date(1986, 11, 18),
-                                     'twitter' : '@davidsmith',
-                                     'facebook' : "https://www.facebook.com/DavidSmith",
-                                     'height' : 6.7,
-                                     'weight' : 210.0,
-                                     'image': {'url':
-                                                  'holder.js/300x180/auto/#666:#999/text: image'},
-                                     'salary' : 1100000,
-                                     'age': 28,
-                                    },
+                         'first_name': 'David',
+                         'last_name': 'Smith',
+                         'position': 'F',
+                         'birthdate' : datetime.date(1986, 11, 18),
+                         'twitter' : '@davidsmith',
+                         'facebook' : "https://www.facebook.com/DavidSmith",
+                         'height' : 6.7,
+                         'weight' : 210.0,
+                         'image': {'url': 'holder.js/300x180/auto/#666:#999/text: image'},
+                         'salary' : 1100000,
+                         'age': 28,
                         },
                         {'team': 'MyFavTeam',
-                         'player' : {'first_name': 'Tim',
-                                     'last_name': 'Brown',
-                                     'position': 'C',
-                                     'birthdate' : datetime.date(1988, 11, 18),
-                                     'twitter' : '@timbrown',
-                                     'facebook' : "https://www.facebook.com/TimBrown",
-                                     'height' : 6.11,
-                                     'weight' : 230.0,
-                                     'image': {'url':
-                                                  'holder.js/300x180/auto/#666:#999/text: image'},
-                                     'salary' : 1000000,
-                                     'age': 26,
-                                    },
+                         'first_name': 'Tim',
+                         'last_name': 'Brown',
+                         'position': 'C',
+                         'birthdate' : datetime.date(1988, 11, 18),
+                         'twitter' : '@timbrown',
+                         'facebook' : "https://www.facebook.com/TimBrown",
+                         'height' : 6.11,
+                         'weight' : 230.0,
+                         'image': {'url': 'holder.js/300x180/auto/#666:#999/text: image'},
+                         'salary' : 1000000,
+                         'age': 26,
                         },
                        ]
 
     def get_roster(self, amount):
-        query = Roster.objects.order_by('salary')
+        query = Player.objects.order_by('salary')
         ret_list = list(self.players)
+        
+        return get_query_or_def_values(amount, query, ret_list)
 
-        count = query.count()
-        if count < amount:
-            amount = count
-        if amount >= len(ret_list):
-            return query[0:amount]
-        else:
-            ret_list[0:amount] = query[0:amount]
-            return ret_list
+class StandingList:
+    '''Object to build all data, task for the carousel on index.html'''
+    def __init__(self):
+        self.teams = [{'tournament': 'Regular Season 2014',
+                      'team': 'MyFavTeam',
+                      'wins' : 14,
+                      'losses': 6,
+                      'draws': 0,
+                      'win_pct': 0.7,
+                      'games_behind': 0,
+                     },
+                     {'tournament': 'Regular Season 2014',
+                      'team': 'Rival',
+                      'wins' : 12,
+                      'losses': 8,
+                      'draws': 0,
+                      'win_pct': 0.6,
+                      'games_behind': 2,
+                     },
+                     {'tournament': 'Regular Season 2014',
+                      'team': 'DecentContender',
+                      'wins' : 10,
+                      'losses': 10,
+                      'draws': 0,
+                      'win_pct': 0.5,
+                      'games_behind': 4,
+                     },
+                    {'tournament': 'Regular Season 2014',
+                      'team': 'aBadTeam',
+                      'wins' : 6,
+                      'losses': 14,
+                      'draws': 0,
+                      'win_pct': 0.3,
+                      'games_behind': 8,
+                     },
+                    ]
+
+    def get_standings(self, amount):
+        diff = Standings.objects.raw(
+                        'SELECT *, MAX(wins-losses) AS max FROM myfavteam_standings')[0].max
+        if diff == None:
+            diff = 0 
+        query = Standings.objects.raw('SELECT *, 1.0*wins/(wins + losses + 0.5*draws) AS win_pct, '\
+                                      '(%s - (wins-losses)) / 2.0 AS games_behind ' \
+                                      'FROM myfavteam_standings ORDER BY -win_pct', [diff])
+        ret_list = list(self.teams)
+
+        return get_query_or_def_values(amount, query, ret_list)
+
+class StatsList(PlayerList):
+    def __init__(self):
+        PlayerList.__init__(self)
+        ppg = 26.0
+        rpg = 6.0
+        apg = 7.0
+        mpg = 35.0
+        self.stats = []
+        for i in range(len(self.players)):
+            self.stats.append({'player' : self.players[i]}) 
+            self.stats[i]['points_per_game']= ppg - 2*i
+            self.stats[i]['rebounds_per_game'] = rpg + 2*i
+            self.stats[i]['assists_per_game'] = apg - 2*i
+            self.stats[i]['minutes_per_game'] = mpg - i
+
+    def get_stats(self, amount):
+        query = BasketballPlayerStats.objects.order_by('minutes_per_game')
+        ret_list = list(self.stats)
+
+        return get_query_or_def_values(amount, query, ret_list) 

@@ -130,10 +130,10 @@
             <tbody>
               {% for player in roster %}
               <tr>
-                <td>{{player.player.first_name}} {{player.player.last_name}}</td>
-                <td>{{player.player.position}}</td>
-                <td>{{player.player.age}}</td>
-                <td>{{player.player.salary|floatformat}}</td>
+                <td>{{player.first_name}} {{player.last_name}}</td>
+                <td>{{player.position}}</td>
+                <td>{{player.age}}</td>
+                <td>{{player.salary|floatformat}}</td>
               </tr>
               {% endfor %}
             </tbody>
@@ -152,27 +152,15 @@
               </tr>
             </thead>
             <tbody>
+            {% for standings in standings %}
               <tr>
-                <td>Memphis</td>
-                <td>7</td>
-                <td>1</td>
-                <td>.875</td>
-                <td>-</td>
+                <td>{{standings.team}}</td>
+                <td>{{standings.wins}}</td>
+                <td>{{standings.losses}}</td>
+                <td>{{standings.win_pct|floatformat:3}}</td>
+                <td>{{standings.games_behind}}</td>
               </tr>
-              <tr>
-                <td>Houston</td>
-                <td>7</td>
-                <td>1</td>
-                <td>.875</td>
-                <td>-</td>
-              </tr>
-              <tr>
-                <td>Golden State</td>
-                <td>5</td>
-                <td>2</td>
-                <td>.714</td>
-                <td>1½</td>
-              </tr>
+              {% endfor %}
             </tbody>
           </table>
        </div>
@@ -189,27 +177,15 @@
               </tr>
             </thead>
             <tbody>
+            {% for player in stats %}
               <tr>
-                <td>Stephen Curry, PG</td>
-                <td>26.0</td>
-                <td>6.1</td>
-                <td>6.9</td>
-                <td>35.0</td>
+                <td>{{player.player.first_name}} {{player.player.last_name}}</td>
+                <td>{{player.points_per_game|floatformat:1}}</td>
+                <td>{{player.rebounds_per_game|floatformat:1}}</td>
+                <td>{{player.assists_per_game|floatformat:1}}</td>
+                <td>{{player.minutes_per_game|floatformat:1}}</td>
               </tr>
-              <tr>
-                <td>Klay Thompson, SG</td>
-                <td>24.7</td>
-                <td>3.0</td>
-                <td>3.3</td>
-                <td>34.5</td>
-              </tr>
-              <tr>
-                <td>Draymond Green, SF</td>
-                <td>13.6</td>
-                <td>7.1</td>
-                <td>2.6</td>
-                <td>33.1</td>
-              </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>

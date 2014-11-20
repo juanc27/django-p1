@@ -5,7 +5,9 @@ from django.core.urlresolvers import reverse
 
 class Team(models.Model):
     name = models.CharField(max_length=50)
-    description = models.CharField(max_length=255)
+    short_name = models.CharField(max_length=25, null=True, blank=True)
+    city = models.CharField(max_length=50, null=True, blank=True)
+    description = models.CharField(max_length=255, blank=True)
     image = models.ImageField(null=True,blank=True)
     created = models.DateTimeField(auto_now_add=True)
     my_team = models.BooleanField(default = True)
@@ -94,8 +96,8 @@ class Schedule(models.Model):
     # return reverse('myfavteam.views.team', args=[self.team_name])
 
 class Position(models.Model):
-    name = models.CharField(max_length=50)
-    acronym = models.CharField(max_length=10)
+    name = models.CharField(max_length=50, null=True, blank=True)
+    acronym = models.CharField(max_length=10, unique=True)
     created = models.DateTimeField(auto_now_add=True) 
     
     class Meta:
@@ -109,21 +111,23 @@ class Position(models.Model):
 
 class Player(models.Model):
     position = models.ForeignKey('Position')
+    team = models.ForeignKey('Team')
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     birthdate = models.DateField()
-    twitter = models.CharField(max_length=100, null=True)
-    facebook = models.CharField(max_length=250, null=True)
+    twitter = models.CharField(max_length=100, null=True, blank=True)
+    facebook = models.CharField(max_length=250, null=True, blank=True)
     height = models.FloatField(default=0.0)
     weight = models.FloatField(default=0.0)
     created = models.DateTimeField(auto_now_add=True)
     #we shouldn't use age, but sometimes is easier to fill than bday
     age = models.IntegerField(default=0)
-    image = models.ImageField(null=True,blank=True)
+    image = models.ImageField(null=True, blank=True)
     salary = models.IntegerField(default=0)
 
     class Meta:
         ordering = ['-last_name']
+        unique_together = ["position", "team", "first_name", "last_name"]
 
     def __unicode__(self):
         str1 = u"{} {}".format(self.first_name, self.last_name)
@@ -154,6 +158,7 @@ class TournamentTeam(models.Model):
         str1 = u"{} - {}".format(self.tournament, self.team)
         return u'%s' % str1
 
+#use in case a players belongs to different teams or divisions 
 class Roster(models.Model):
     team = models.ForeignKey('Team')
     player = models.ForeignKey('Player')
@@ -181,3 +186,34 @@ class Website(models.Model):
 
     def __unicode__(self):
         return u'%s' % self.name
+
+class Standings(models.Model):
+    tournament = models.ForeignKey('Tournament')
+    team = models.ForeignKey('Team')
+    wins = models.IntegerField(default=0)
+    losses = models.IntegerField(default=0)
+    draws = models.IntegerField(default=0)
+
+    class Meta:
+        unique_together = ["tournament", "team"]
+
+    def __unicode__(self):
+        str1 = u"{} - {}".format(self.tournament, self.team)
+        return u'%s' % str1
+
+class BasketballPlayerStats(models.Model):
+    tournament = models.ForeignKey('Tournament')
+    player = models.ForeignKey('Player')
+    points_per_game = models.FloatField(default=0.0)
+    rebounds_per_game = models.FloatField(default=0.0)
+    assists_per_game = models.FloatField(default=0.0)
+    minutes_per_game = models.FloatField(default=0.0)
+
+    class Meta:
+        unique_together = ["tournament", "player"]
+
+    def __unicode__(self):
+        str1 = u"{} - PPG: {}".format(self.player, self.points_per_game)
+        return u'%s' % str1
+
+
