@@ -17,4 +17,20 @@ urlpatterns = patterns('',
     url(
         regex=r"^news/",
         view='myfavteam.views.news'),
+    url(
+        regex=r"^social/",
+        view='myfavteam.views.social'),
+    url(
+        regex=r"^schedule/",
+        view='myfavteam.views.schedule'),
+    url(
+        regex=r"^standings/",
+        view='myfavteam.views.standings'),
+    url(
+        regex=r"^stats/",
+        view='myfavteam.views.stats'),
+    url(
+        regex=r"^roster/",
+        view='myfavteam.views.roster'),
+
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

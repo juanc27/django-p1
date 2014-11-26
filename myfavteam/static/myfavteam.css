@@ -69,3 +69,38 @@ body {
   padding: 9.5px;
   margin: 0 0 10px
 }
+
+a_no_color {
+}
+a.a_no_color {
+  color:inherit;
+}
+
+a_news_color {
+}
+a.a_news_color {
+  color: #043A6C;
+}
+
+img.my_news_img {
+//    height: 200x;
+    width: 200px;
+    max-height: 200px;
+//    max-width: 250px;
+}
+
+div.my_news_col {
+    padding: 0px 50px 25px 50px;
+}
+
+.my-news-website-txt {
+  color: #000;
+  font-size: 80%;
+}
+
+div.my-schedule-container {
+  padding-right: 400px;
+  padding-left: 400px;
+  margin-right: auto;
+  margin-left: auto;
+}

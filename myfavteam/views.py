@@ -51,10 +51,46 @@ def index(request, team = -1):
     return render(request, 'myfavteam/index.html', resp_dict)
 
 def news(request):
+    resp_dict = dict()
     #get my news
-    news = News.objects.all()
+    n = NewsList()
+    news = n.get_news(5)
+    resp_dict['news'] = news
+    
     return render(request, 'myfavteam/news.html', {'news':news})
 
+def social(request):
+    return render(request, 'myfavteam/social.html', {})
+
+def schedule(request):
+    resp_dict = dict()
+    g = Games()
+    games = g.get_all_tournament_games()
+    resp_dict['games'] = games
+    return render(request, 'myfavteam/schedule.html', resp_dict)
+
+def standings(request):
+    resp_dict = dict()
+    s = StandingList()
+    standings = s.get_standings(5)
+    resp_dict['standings'] = standings
+    return render(request, 'myfavteam/standings.html', resp_dict)
+
+def stats(request):
+    resp_dict = dict()
+    st = StatsList()
+    stats = st.get_stats(3)
+    resp_dict['stats'] = stats
+    return render(request, 'myfavteam/stats.html', resp_dict)
+
+def roster(request):
+    resp_dict = dict()
+    r = PlayerList()
+    roster = r.get_roster(3)
+    resp_dict['roster'] = roster
+    return render(request, 'myfavteam/roster.html', resp_dict)
+
+#---Classes to colect data
 class Carousel:
     '''Object to build all data, task for the carousel on index.html'''
     def __init__(self):
@@ -103,19 +139,25 @@ class Games:
                             'stadium' : {'name': 'Our Stadium', 'city': 'Our City'},
                             'tournament': 'Tournament A',
                             'home': True, 'date' : now.replace(year=now.year+1),
-                            'team_score': 50, 'against_score': 49,
+                            'team_score': 0, 'against_score': 0,
+                            'recap_link': '#',
                            },
                            {'team': 'MyFavTeam', 'team_against': 'Opponent2',
-                            'stadium' : {'name': 'Stadium', 'city': 'City'},
+                            'stadium' : {'name': 'Their Stadium', 'city': 'City'},
                             'tournament': 'Tournament A',
                             'home': False, 'date' : now.replace(year=now.year+2),
-                            'team_score': 99, 'against_score': 100,
+                            'team_score': 0, 'against_score': 0,
+                            'recap_link': '#',
                            }
                           ]
         self.last_games = copy.deepcopy(self.next_games)
         self.last_games.reverse()
         self.last_games[0]['date'] = now.replace(year=now.year-1)
         self.last_games[1]['date'] = now.replace(year=now.year-2)
+        self.last_games[0]['team_score'] = 50
+        self.last_games[0]['against_score'] = 49
+        self.last_games[1]['team_score'] = 99
+        self.last_games[1]['against_score'] = 100
 
     def get_games(self, amount, next=True):
         now = datetime.datetime.now()
@@ -135,6 +177,17 @@ class Games:
     def get_last_games(self, amount):
         return self.get_games(amount, next=False)
 
+    def get_all_tournament_games(self, tournament = None):
+        all = list()
+        all.extend(self.last_games)
+        all.extend(self.next_games)
+        #get current or last tournament first
+        #if tournament == None:
+            
+        query = Schedule.objects.filter().order_by('-date')
+
+        return get_query_or_def_values(162, query, all)
+
 class NewsList:
     '''Object to build all data, task for the carousel on index.html'''
     def __init__(self):
@@ -149,7 +202,7 @@ class NewsList:
                       'date' : now,
                       'link' : '#',
                       'author': 'myself',
-                      'website': 'website1.com',
+                      'website': {'name': 'espn', 'link': "http://espn.go.com"},
                       'image': {'url': 'holder.js/90x62/auto/#666:#999/text: image'},
                      },
                      {'team': 'MyFavTeam',
@@ -157,7 +210,7 @@ class NewsList:
                       'date' : now2,
                       'link' : '#',
                       'author': 'myself2',
-                      'website': 'website2.com',
+                      'website': {'name': 'yahoo sports', 'link': "http://sports.yahoo.com"},
                       'image': {'url': 'holder.js/90x62/auto/#555:#888/text: image'},
                      },
                     ]
@@ -206,7 +259,7 @@ class PlayerList:
                          'height' : 6.11,
                          'weight' : 230.0,
                          'image': {'url': 'holder.js/300x180/auto/#666:#999/text: image'},
-                         'salary' : 1000000,
+                         'salary' : 600000,
                          'age': 26,
                         },
                        ]

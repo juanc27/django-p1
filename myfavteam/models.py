@@ -6,11 +6,11 @@ from django.core.urlresolvers import reverse
 class Team(models.Model):
     name = models.CharField(max_length=50)
     short_name = models.CharField(max_length=25, null=True, blank=True)
+    my_team = models.BooleanField(default = False)
     city = models.CharField(max_length=50, null=True, blank=True)
     description = models.CharField(max_length=255, blank=True)
     image = models.ImageField(null=True,blank=True)
     created = models.DateTimeField(auto_now_add=True)
-    my_team = models.BooleanField(default = True)
 
     class Meta:
         ordering = ['created']
@@ -39,8 +39,8 @@ class News(models.Model):
     def __unicode__(self):
         return u'%s' % self.title
     
-    #def get_absolute_url(self):
-    # return reverse('myfavteam.views.team', args=[self.team_name])
+    def get_absolute_url(self):
+        return u %'%s' % self.link
 
 class Stadium(models.Model):
     name = models.CharField(max_length=100)
@@ -60,7 +60,7 @@ class Stadium(models.Model):
 class Tournament(models.Model):
     team = models.ForeignKey('Team')
     name = models.CharField(max_length=500)
-    standings_link = models.CharField(max_length=500)
+    standings_link = models.CharField(max_length=500, null=True, blank=True)
     start_date = models.DateField(auto_now_add=True)
     end_date = models.DateField(default='12/1/3000')
     class Meta:
@@ -81,6 +81,7 @@ class Schedule(models.Model):
     against_score = models.IntegerField(default=0)
     home = models.BooleanField(default=True)
     date = models.DateTimeField()
+    recap_link =  models.CharField(max_length=500, null=True, blank=True) 
     
     class Meta:
         ordering = ['-date']
@@ -182,7 +183,10 @@ class TeamPicture(models.Model):
 class Website(models.Model):
     name = models.CharField(max_length=50)
     link = models.CharField(max_length=200)
-    image = models.ImageField()
+    image = models.ImageField(null=True, blank=True)
+
+    def get_absolute_url(self):
+        return u %'%s' % self.link
 
     def __unicode__(self):
         return u'%s' % self.name

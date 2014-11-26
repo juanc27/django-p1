@@ -1,0 +1,29 @@
+{% extends 'myfavteam/base.html' %}
+{% load humanize %}
+{% block title %} Roster {% endblock %}
+
+{% block content %}
+<div class="my-schedule-container">
+  <h2> Roster </h2>
+    <table class="table table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Age</th>
+                <th>Anual Salary</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for player in roster %}
+              <tr>
+                <td>{{player.first_name}} {{player.last_name}}</td>
+                <td>{{player.position}}</td>
+                <td>{{player.age}}</td>
+                <td>$ {%if player.salary > 999999%}{{player.salary|intword}}{%else%}{{player.salary|intcomma}}{%endif%}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+</div> <!-- /container -->
+{% endblock %}

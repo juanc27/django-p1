@@ -1,0 +1,31 @@
+{% extends 'myfavteam/base.html' %}
+
+{% block title %} Stas {% endblock %}
+
+{% block content %}
+<div class="my-schedule-container">
+  <h2> Player Stats - {%if curr_tournament %}{{curr_tournament}}{%else%}Current Tournament{%endif%} </h2>
+<table class="table table-striped table-condensed">
+            <thead>
+              <tr>
+                <th>Player</th>
+                <th>PPG</th>
+                <th>RPG</th>
+                <th>APG</th>
+                <th>MPG</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for player in stats %}
+              <tr>
+                <td>{{player.player.first_name}} {{player.player.last_name}}</td>
+                <td>{{player.points_per_game|floatformat:1}}</td>
+                <td>{{player.rebounds_per_game|floatformat:1}}</td>
+                <td>{{player.assists_per_game|floatformat:1}}</td>
+                <td>{{player.minutes_per_game|floatformat:1}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+</div> <!-- /container -->
+{% endblock %}

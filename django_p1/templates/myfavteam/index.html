@@ -2,6 +2,8 @@
 
 {% block title %} MyFavTeam App {% endblock %}
 
+{% load humanize %}
+
 {% block content %}
     <!-- Carousell: 1. next_game, 2. latest news and 3.last result -->
       <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
@@ -30,8 +32,8 @@
             <!-img src="{{carousel_pic_1}}" alt="Second slide" height="500" width="1140">
             <div class="container">
               <div class="carousel-caption">
-                  <h2>{{latest_news.title}}</h2>
-                  <p>{{latest_news.website}}</p>
+                  <h2><a class="a_no_color" href="{{latest_news.link}}">{{latest_news.title}}</a></h2>
+                  <p><a class="a_no_color" href="{{latest_news.website.link}}">{{latest_news.website.name}}</a></p>
               </div>
             </div> 
           </div>
@@ -63,31 +65,34 @@
       <!- Example row of columns -->
       <div class="row">
         <div class="col-md-4">
-          <h2>News</h2>
+          <h2><a class="a_no_color" href="/news/">News</a></h2>
           {% for news in news %}
            <div class="row">
                <div class="col-md-3">
-                   <a href="#">
+                   <a href="{{news.link}}">
+                      {% if news.image %}
                       <img class="" src="{{news.image.url}}" alt="" height="62" />
+                      {% else %}
+                      <img class="" src="holder.js/90x62/auto/#666:#999/text: image" alt="" height="62" />
+                      {% endif%}
                    </a>
                </div>
                <div class="col-md-9">
-                   <a>{{news.title}}</a>
+                   <a href="{{news.link}}">{{news.title}}</a>
                    <br>
-                   <div class="my-small-txt"> {{news.website}} - {{ news.date|timesince }} </div>
+                   <div class="my-small-txt"> <a class="a_no_color" href="{{news.website.link}}">{{news.website.name}}</a> - {{ news.date|timesince }} ago </div>
                </div>
            </div>
            <li class="divider"></li>
           {% endfor %}
-           <a class="btn btn-default" href="#" role="button">More &raquo;</a></p> 
         </div>
         <div class="col-md-4">
-          <h2>Social</h2>
+          <h2><a class="a_no_color" href="/social/">Social</a></h2>
           <a class="twitter-timeline" href="https://twitter.com/hashtag/myfavteamapp" data-widget-id="532304836914475009">#myfavteamapp Tweets</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
        </div>
         <div class="col-md-4">
-          <h2>Schedule</h2>
+          <h2><a class="a_no_color" href="/schedule/">Schedule</a></h2>
           <div class="list-group">
             <a href="#" class="list-group-item active">
               <h4 class="list-group-item-heading">Next Games</h4>
@@ -112,35 +117,36 @@
                 </a>
             {% endfor %}
           </div>
-          <p><a class="btn btn-default" href="#" role="button">More &raquo;</a></p>
         </div>
       </div>
       <div class="row">
         <div class="col-md-4">
-          <h2>Roster</h2>
-          <table class="table table-condensed">
+          <h2><a class="a_no_color" href="/stats/">Stats</a></h2>
+          <table class="table table-striped table-condensed">
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Position</th>
-                <th>Age</th>
-                <th>Salary</th>
+                <th>Player</th>
+                <th>PPG</th>
+                <th>RPG</th>
+                <th>APG</th>
+                <th>MPG</th>
               </tr>
             </thead>
             <tbody>
-              {% for player in roster %}
+            {% for player in stats %}
               <tr>
-                <td>{{player.first_name}} {{player.last_name}}</td>
-                <td>{{player.position}}</td>
-                <td>{{player.age}}</td>
-                <td>{{player.salary|floatformat}}</td>
+                <td>{{player.player.first_name}} {{player.player.last_name}}</td>
+                <td>{{player.points_per_game|floatformat:1}}</td>
+                <td>{{player.rebounds_per_game|floatformat:1}}</td>
+                <td>{{player.assists_per_game|floatformat:1}}</td>
+                <td>{{player.minutes_per_game|floatformat:1}}</td>
               </tr>
               {% endfor %}
             </tbody>
-          </table> 
+          </table>
         </div>
         <div class="col-md-4">
-          <h2>Standings</h2>
+          <h2><a class="a_no_color" href="/standings/">Standings</a></h2>
           <table class="table table-striped table-condensed">
             <thead>
               <tr>
@@ -165,25 +171,23 @@
           </table>
        </div>
         <div class="col-md-4">
-          <h2>Stats</h2>
-          <table class="table table-striped table-condensed">
+          <h2><a class="a_no_color" href="/roster/">Roster</a></h2>
+          <table class="table table-condensed">
             <thead>
               <tr>
-                <th>Player</th>
-                <th>PPG</th>
-                <th>RPG</th>
-                <th>APG</th>
-                <th>MPG</th>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Age</th>
+                <th>Anual Salary</th>
               </tr>
             </thead>
             <tbody>
-            {% for player in stats %}
+              {% for player in roster %}
               <tr>
-                <td>{{player.player.first_name}} {{player.player.last_name}}</td>
-                <td>{{player.points_per_game|floatformat:1}}</td>
-                <td>{{player.rebounds_per_game|floatformat:1}}</td>
-                <td>{{player.assists_per_game|floatformat:1}}</td>
-                <td>{{player.minutes_per_game|floatformat:1}}</td>
+                <td>{{player.first_name}} {{player.last_name}}</td>
+                <td>{{player.position}}</td>
+                <td>{{player.age}}</td>
+                <td>$ {%if player.salary > 999999%}{{player.salary|intword}}{%else%}{{player.salary|intcomma}}{%endif%}</td>
               </tr>
               {% endfor %}
             </tbody>

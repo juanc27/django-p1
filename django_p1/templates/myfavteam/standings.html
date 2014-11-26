@@ -1,0 +1,32 @@
+{% extends 'myfavteam/base.html' %}
+
+{% block title %} Standings {% endblock %}
+
+{% block content %}
+<div class="my-schedule-container">
+  <h2> Standings - {%if curr_tournament %}{{curr_tournament}}{%else%}Current Tournament{%endif%} </h2>
+  <table class="table table-striped">
+    <thead>
+      <thead>
+        <tr>
+          <th>Team</th>
+          <th>W</th>
+          <th>L</th>
+          <th>PCT</th>
+          <th>GB</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for standings in standings %}
+          <tr>
+            <td>{{standings.team}}</td>
+            <td>{{standings.wins}}</td>
+            <td>{{standings.losses}}</td>
+            <td>{{standings.win_pct|floatformat:3}}</td>
+            <td>{{standings.games_behind}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+  </table>
+</div> <!-- /container -->
+{% endblock %}
