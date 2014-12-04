@@ -15,7 +15,7 @@
                       {% if news.image %}
                       <img class="my_news_img" src="{{news.image.url}}"/>
                       {% else %}
-                      <img class="my_news_img" src="holder.js/356x200/auto/#666:#999/text: image"/>
+                      <img class="my_news_img" src="{{STATIC_URL}}holder.js/356x200/auto/#666:#999/text: image"/>
                       {% endif %}
                    </a>
                </div>

@@ -1,0 +1,114 @@
+{% extends 'myfavteam/base.html' %}
+{% load humanize %}
+{% block title %} Player {% endblock %}
+
+{% block content %}
+
+{% if player %}
+<div class="container my-player-container">
+  <div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-3 my_player_img_col">
+      {% if player.image %}
+        <img src="{{player.image.url}}"/>
+      {% else %}
+        <img data-src="holder.js/290x300/auto/#5983ab:#fff/text: image">
+      {% endif %}
+    </div>
+    <div class="col-md-7">
+      <h2>{{player.first_name}} {{player.last_name}}</h2>
+      <h4># {{player.jersey_number}} {{player.position}} -  {{player.team}} </h4>
+      <table width="80%">
+        <tbody>
+          <tr><th width="20%">Age: </th><td>{{player.age}}</td> </tr>
+          <tr><th>Salary: </th><td>$ {%if player.salary > 999999%}{{player.salary|intword}}{%else%}{{player.salary|intcomma}}{%endif%} per year</td></tr>
+          <tr><th>Height: </th><td>{{player.height|floatformat:1}}</td></tr>
+          <tr><th>Weight: </th><td>{{player.weight|floatformat:0}}</td></tr>
+          <tr><th>Twitter: </th><td><a href="https://twitter.com/{{player.twitter}}">@{{player.twitter}}</a></td></tr>
+        </tbody>
+      </table>
+        <h4>Stats - Current Tournament</h4>
+        <table class="my-table-bordered" width="40%">
+            <thead>
+              <tr>
+                <th>PPG</th>
+                <th>RPG</th>
+                <th>APG</th>
+                <th>MPG</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                {% if stats %}
+                <td>{{stats.points_per_game|floatformat:1}}</td>
+                <td>{{stats.rebounds_per_game|floatformat:1}}</td>
+                <td>{{stats.assists_per_game|floatformat:1}}</td>
+                <td>{{stats.minutes_per_game|floatformat:1}}</td>
+                {% else %}
+                <td>0.0</td>
+                <td>0.0</td>
+                <td>0.0</td>
+                <td>0.0</td>
+                {% endif %}
+              </tr>
+            </tbody>
+          </table>
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+<!------NEWS----->
+<h1 align="center"> News </h1>
+    <div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+    {% for news in news %}
+           <li class="divider"></li>
+           <div class="row">
+               <div class="col-md-3">
+                   <a href="{{news.link}}">
+                      {% if news.image %}
+                      <img class="my_news_img" src="{{news.image.url}}"/>
+                      {% else %}
+                      <img class="my_news_img" src="holder.js/356x200/auto/#666:#999/text: image"/>
+                      {% endif %}
+                   </a>
+               </div>
+               <div class="col-md-9 my_player_news_col">
+                   <a class="a_news_color" href="{{news.link}}"><h3>{{news.title}}</h3></a>
+                   {% if news.description %}
+                   <p font-style="italic"> {{news.description}}</p>
+                   {% endif %}
+                   {% if news.cached_text %}
+                   <p>{{ news.cached_text|truncatewords:50}}</p>
+                   {% endif %}
+                   <div class="my-news-website-txt"> <a class="a_no_color" href="{{news.website.link}}">{{news.website.name}}</a> - {{ news.date|timesince }} ago </div>
+               </div>
+           </div>
+    {% endfor %}
+    </div>
+    <div class="col-md-1"></div>
+    </div>
+<!-----SOCIAL---->
+    <h2 align="center">@{{player.twitter}}</h2>
+    <div class="row">
+      <div class="col-md-3">
+      </div>
+      <div class="col-md-6">
+    <a class="twitter-timeline" 
+       href="https://twitter.com/{{player.twitter}}"
+       data-widget-id="532304836914475009"
+       width="900"
+       height="300"
+       data-screen-name="{{player.twitter}}"
+       data-show-replies="false"
+       data-tweet-limit="5">@{{player.twitter}}</a>
+       <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+      </div>
+      <div class="col-md-3">
+    </div>
+</div>
+{% else %}
+    <h2 align="center"> Player Not Found </h2>
+{%endif%}
+</div> <!-- /container -->
+{% endblock %}

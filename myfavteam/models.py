@@ -18,8 +18,26 @@ class Team(models.Model):
     def __unicode__(self):
         return u'%s' % self.name
 
-    #def get_absolute_url(self):
-    # return reverse('myfavteam.views.team', args=[self.team_name])
+    def get_absolute_url(self):
+        return reverse('myfavteam.views.index', args=[str(self.id)])
+
+    def get_news_url(self):
+        return reverse('myfavteam.views.news', args=[str(self.id)])
+
+    def get_social_url(self):
+        return reverse('myfavteam.views.social', args=[str(self.id)])
+
+    def get_schedule_url(self):
+        return reverse('myfavteam.views.schedule', args=[str(self.id)])
+
+    def get_stats_url(self):
+        return reverse('myfavteam.views.stats', args=[str(self.id)])
+    
+    def get_standings_url(self):
+        return reverse('myfavteam.views.standings', args=[str(self.id)]) 
+
+    def get_roster_url(self):
+        return reverse('myfavteam.views.roster', args=[str(self.id)])
 
 class News(models.Model):
     team = models.ForeignKey('Team')
@@ -58,13 +76,14 @@ class Stadium(models.Model):
     # return reverse('myfavteam.views.team', args=[self.team_name])
 
 class Tournament(models.Model):
-    team = models.ForeignKey('Team')
     name = models.CharField(max_length=500)
+    team = models.ForeignKey('Team') #meant to be for fav teams only
     standings_link = models.CharField(max_length=500, null=True, blank=True)
     start_date = models.DateField(auto_now_add=True)
-    end_date = models.DateField(default='12/1/3000')
+    end_date = models.DateField(default='12/1/2025')
     class Meta:
         ordering = ['-start_date']
+        unique_together = ["name", "team"]
 
     def __unicode__(self):
         return u'%s' % self.name
@@ -73,10 +92,10 @@ class Tournament(models.Model):
     # return reverse('myfavteam.views.team', args=[self.team_name])
 
 class Schedule(models.Model):
+    tournament = models.ForeignKey('Tournament')
     team = models.ForeignKey('Team')
     team_against = models.ForeignKey('Team', related_name='agn+')
     stadium = models.ForeignKey('Stadium')
-    tournament = models.ForeignKey('Tournament')
     team_score = models.IntegerField(default=0)
     against_score = models.IntegerField(default=0)
     home = models.BooleanField(default=True)
@@ -115,6 +134,7 @@ class Player(models.Model):
     team = models.ForeignKey('Team')
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
+    jersey_number = models.IntegerField(null=True, blank=True)
     birthdate = models.DateField()
     twitter = models.CharField(max_length=100, null=True, blank=True)
     facebook = models.CharField(max_length=250, null=True, blank=True)
@@ -134,8 +154,8 @@ class Player(models.Model):
         str1 = u"{} {}".format(self.first_name, self.last_name)
         return u'%s' % str1
 
-    #def get_absolute_url(self):
-    # return reverse('myfavteam.views.team', args=[self.team_name])
+    def get_absolute_url(self):
+        return reverse('myfavteam.views.player', args=[str(self.id)])
 
 class PlayerNews(models.Model):
     news = models.ForeignKey('News')
