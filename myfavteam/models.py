@@ -80,7 +80,7 @@ class Tournament(models.Model):
     team = models.ForeignKey('Team') #meant to be for fav teams only
     standings_link = models.CharField(max_length=500, null=True, blank=True)
     start_date = models.DateField(auto_now_add=True)
-    end_date = models.DateField(default='12/1/2025')
+    end_date = models.DateField(default='2025-12-01')
     class Meta:
         ordering = ['-start_date']
         unique_together = ["name", "team"]

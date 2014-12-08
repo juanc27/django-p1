@@ -42,7 +42,11 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">MyFavTeam App</a>
+          {% if team %}
+            <a class="navbar-brand" href="{{team.get_absolute_url}}">MyFavTeamApp - {{team.short_name}}</a>
+          {% else %} 
+            <a class="navbar-brand" href="/">MyFavTeam App</a>
+          {% endif %}
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">

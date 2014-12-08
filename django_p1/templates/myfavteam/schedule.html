@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="my-schedule-container">
-  <h2> Schedule/Results - {%if curr_tournament %}{{curr_tournament}}{%else%}Current Tournament{%endif%} </h1>
+  <h2> Schedule/Results - {%if tournament %}{{tournament.name}}{%else%}Current Tournament{%endif%} </h1>
   <table class="table table-striped">
             <thead>
               <tr>

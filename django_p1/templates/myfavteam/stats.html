@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="my-schedule-container">
-  <h2> Player Stats - {%if curr_tournament %}{{curr_tournament}}{%else%}Current Tournament{%endif%} </h2>
+  <h2> Player Stats - {%if tournament %}{{tournament.name}}{%else%}Current Tournament{%endif%} </h2>
 {% include 'myfavteam/table_stats.html' %}
 </div> <!-- /container -->
 {% endblock %}

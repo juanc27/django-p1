@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import Http404
+from django.utils import timezone
 from myfavteam.models import *
 import datetime
 import copy
@@ -60,7 +61,8 @@ def schedule(request, team_id = 0):
     cdata = CommonData(resp_dict, team_id)
 
     g = Games()
-    resp_dict['games'] = g.get_all_tournament_games()
+    resp_dict['games'] = g.get_all_tournament_games(cdata.team_id, cdata.tournament_id)
+
     return render(request, 'myfavteam/schedule.html', resp_dict)
 
 def standings(request, team_id = 0):
@@ -68,8 +70,8 @@ def standings(request, team_id = 0):
     cdata = CommonData(resp_dict, team_id)
 
     s = StandingList()
-    standings = s.get_standings(cdata.tournament_id, 5)
-    resp_dict['standings'] = standings
+    resp_dict['standings'] = s.get_standings(cdata.tournament_id, 5)
+
     return render(request, 'myfavteam/standings.html', resp_dict)
 
 def stats(request, team_id = 0):
@@ -77,8 +79,8 @@ def stats(request, team_id = 0):
     cdata = CommonData(resp_dict, team_id)
 
     st = StatsList()
-    stats = st.get_stats(cdata.team_id, 5)
-    resp_dict['stats'] = stats
+    resp_dict['stats'] = st.get_stats(cdata.team_id, 5)
+
     return render(request, 'myfavteam/stats.html', resp_dict)
 
 def roster(request, team_id = 0):
@@ -86,11 +88,10 @@ def roster(request, team_id = 0):
     cdata = CommonData(resp_dict, team_id)
 
     r = PlayerList()
-    roster = r.get_roster(cdata.team_id, 5)
-    resp_dict['roster'] = roster
+    resp_dict['roster'] = r.get_roster(cdata.team_id, 5)
     return render(request, 'myfavteam/roster.html', resp_dict)
 
-def player(request, player_id="1"):
+def player(request, player_id=1):
     resp_dict = dict()
     add_navbar_data(resp_dict)
 
@@ -101,20 +102,36 @@ def player(request, player_id="1"):
     resp_dict['stats'] = st.get_player_stats(player_id)
     n = NewsList()
     resp_dict['news'] = n.get_player_news(player_id, 5)
+
     return render(request, 'myfavteam/player.html', resp_dict)
 
 #---Classes to colect data
 class CommonData():
     def __init__(self, resp_dict, team_id):
         add_navbar_data(resp_dict)
-          
-        self.team_id = get_myteamid_or_default_or_404(int(team_id))
-        self.tournament_id = get_current_tournament_id(self.team_id)
+         
+        self.team = resp_dict['team'] = get_myteam_or_default_or_404(int(team_id))
+        self.team_id = get_id_or_0(self.team)
+        self.tournament = resp_dict['tournament'] = get_current_tournament(self.team_id)
+        self.tournament_id = get_id_or_0(self.tournament)
 
 def add_navbar_data(resp_dict):
     #get fav teams for top drop down menu
     teams = Team.objects.filter(my_team=True).order_by('created')
     resp_dict['teams'] = teams
+
+#The following safe queries
+#query_set: single row of a query set result. it can also be a dict in case of default vals
+def get_id_or_0(query_set):
+    id = 0
+    try:
+        id = query_set.id
+    except:
+        try: 
+            id = query_set['id']
+        except:
+            id = 0
+    return id
 
 def get_current_tournament(team_id):
     try:
@@ -124,26 +141,17 @@ def get_current_tournament(team_id):
         tournament = {'id': 0, 'name': tname}
     return tournament
 
-def get_current_tournament_id(team_id):
-    id = 0
-    tournament = get_current_tournament(team_id)
-    try:
-        id = tournament.id
-    except:
-        id = tournament['id']
-    return id
-
-def get_myteamid_or_default_or_404(team_id):
+def get_myteam_or_default_or_404(team_id):
     if team_id > 0:
         try:
-            team = Team.objects.get(id = team_id).id
+            team = Team.objects.get(id = team_id)
         except:
             raise Http404
     elif team_id == 0:
         try:
-            team = Team.objects.order_by('created')[0].id
+            team = Team.objects.order_by('created')[0]
         except:
-            team = 0
+            team = None
         
     return team
 
@@ -158,7 +166,7 @@ def get_query_or_def_values(amount, query, ret_list):
         try:
             count = len(list(query))
         except:
-            count = 0
+            raise Http404
 
     if count >= lenght:
         return query[0:amount]
@@ -190,7 +198,7 @@ def get_one_val_or_none(query, ret_list, val_id):
 class Games:
     '''Object to build all data, task for the carousel on index.html'''
     def __init__(self):
-        now = datetime.datetime.now()
+        now = timezone.now()
         self.next_games = [{'team': 'MyFavTeam', 'team_against': 'Opponent1',
                             'stadium' : {'name': 'Our Stadium', 'city': 'Our City'},
                             'tournament': 'Tournament A',
@@ -216,7 +224,7 @@ class Games:
         self.last_games[1]['against_score'] = 100
 
     def get_games(self, team_id, amount, next=True):
-        now = datetime.datetime.now()
+        now = timezone.now()
 
         if next == True:
             query = Schedule.objects.filter(team=team_id, date__gt=now)
@@ -233,21 +241,21 @@ class Games:
     def get_last_games(self, team_id, amount):
         return self.get_games(team_id, amount, next=False)
 
-    def get_all_tournament_games(self, tournament = None):
+    def get_all_tournament_games(self, team_id, tournament_id):
         all = list()
         all.extend(self.last_games)
         all.extend(self.next_games)
         #get current or last tournament first
         #if tournament == None:
             
-        query = Schedule.objects.filter().order_by('-date')
+        query = Schedule.objects.filter(team=team_id, tournament=tournament_id).order_by('-date')
 
         return get_query_or_def_values(162, query, all)
 
 class NewsList:
     '''Object to build all data, task for the carousel on index.html'''
     def __init__(self):
-        now = datetime.datetime.now()
+        now = timezone.now()
         if now.minute > 10:
             now2 = now.replace(minute=now.minute-10)
         else:
@@ -279,7 +287,12 @@ class NewsList:
 
     def get_player_news(self, player_id, amount):
         query = News.objects.filter(playernews__player=player_id).order_by('-date')
-        ret_list = list(self.news)
+
+        try:
+            Player.objects.get(id=player_id)
+            return query[0:amount]
+        except:
+            ret_list = list(self.news)
 
         return get_query_or_def_values(amount, query, ret_list)
 
@@ -446,16 +459,16 @@ class Carousel:
                     'holder.js/' + '720x400' + '/auto/#777:#999/text:',
                     'holder.js/' + '540x300' + '/auto/#888:#999/text:']
 
-    def get_pics(self):
+    def get_pics(self, team_id):
         for i in range(self.num_of_pics):
             try:
-                pic = TeamPicture.objects.order_by('-uploaded')[i].image.url
+                pic = TeamPicture.objects.filter(team=team_id).order_by('-uploaded')[i].image.url
             except:
                 pic = self.pic[i]
             self.pic[i] = pic
 
-    def load_data(self, resp):
-        self.get_pics()
+    def load_data(self, team_id, resp):
+        self.get_pics(team_id)
         for i in range(self.num_of_pics):
             str = "carousel_pic_{}".format(i)
             resp[str] = self.pic[i]
