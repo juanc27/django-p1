@@ -1,6 +1,7 @@
 from django.test import TestCase
 from myfavteam.models import *
 from myfavteam.views import *
+
 import datetime
 import copy
 from django.http import Http404
@@ -8,6 +9,7 @@ from django.http import Http404
 test_team1 = {'name'        : 'MyFavTestTeam'  ,
               'short_name'  : 'TestTeam'       ,
               'my_team'     : True             ,
+              'league'      : 'NBA'            ,
               'city'        : 'MyTestCity'     ,
               'description' : 'TextDescription',
               'image'       : 'holder.js/90x62/auto/#666:#999/text: image',
@@ -16,17 +18,18 @@ test_team1 = {'name'        : 'MyFavTestTeam'  ,
 test_team2 = {'name'        : 'MyFavTestTeam2'  ,
               'short_name'  : 'TestTeam2'       ,
               'my_team'     : True              ,
+              'league'      : 'NBA'             ,
               'city'        : 'MyTestCity2'     ,
               'description' : 'TextDescription2',
               'image'       : 'holder.js/90x62/auto/#666:#999/text: image',
              }
 
 test_tournament1 = {'name'        : 'My Test Tournament',
-                    'team_id'     : 1                   ,
+                    'league'     : 'NBA'                   ,
                    }
 
 test_tournament2 = {'name'        : 'My Test Tournament2',
-                    'team_id'     : 2                   ,
+                    'league'     : 'NBA'                   ,
                    }
 test_positions = {'name'   : 'Guard',
                   'acronym': 'G',
@@ -42,7 +45,6 @@ test_players = [{'team_id'  : 1,
                  'height' : 6.1,
                  'weight' : 180.0,
                  'salary' : 1200000,
-                 'age': 30,
                  'jersey_number': 23,
                 },
                ]
@@ -149,7 +151,7 @@ class TestNoTeam(TestCase):
         self.assertIsNotNone(resp_dict['carousel_pic_2'])
 
     def test_Carousel_wrong_team(self):
-        self.test_StandingList(team_id = 100)
+        self.test_Carousel(team_id = 100)
 
 class TestOneTeam(TestCase):
     def setUp(self):

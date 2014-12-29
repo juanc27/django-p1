@@ -1,22 +1,44 @@
 from django.db import models
 from django.core.urlresolvers import reverse
+import datetime
 
 # Create your models here.
 
 class Team(models.Model):
-    name = models.CharField(max_length=50)
-    short_name = models.CharField(max_length=25, null=True, blank=True)
+    short_name = models.CharField(max_length=25)
+    name = models.CharField(max_length=50, null=True, blank=True)
     my_team = models.BooleanField(default = False)
     city = models.CharField(max_length=50, null=True, blank=True)
     description = models.CharField(max_length=255, blank=True)
     image = models.ImageField(null=True,blank=True)
     created = models.DateTimeField(auto_now_add=True)
+    league = models.CharField(max_length=20, choices = (('NBA', 'NBA'),
+                                                       ('MLB', 'MLB'),
+                                                       ('NFL', 'NFL')))
+    #conference or league
+    conference = models.CharField(max_length=20, choices =
+                                         (('Western', 'Western'),
+                                          ('Eastern', 'Eastern'),
+                                          ('National', 'National'),
+                                          ('American', 'American'),
+                                          ('NFC', 'NFC'),
+                                          ('AFC', 'AFC'),
+                                         ))
+
+    division = models.CharField(max_length=20, choices =
+                                         (('Atlantic', 'Atlantic'),
+                                          ('Central', 'Central'),
+                                          ('Southeast', 'Southeast'),
+                                          ('Northwest', 'Northwest'),
+                                          ('Pacific', 'Pacific'),
+                                          ('Southwest', 'Southwest'),
+                                         )) 
 
     class Meta:
         ordering = ['created']
 
     def __unicode__(self):
-        return u'%s' % self.name
+        return u'%s' % self.short_name
 
     def get_absolute_url(self):
         return reverse('myfavteam.views.index', args=[str(self.id)])
@@ -63,7 +85,6 @@ class News(models.Model):
 class Stadium(models.Model):
     name = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
-    country = models.CharField(max_length=100)
     created = models.DateTimeField(auto_now_add=True)
     
     class Meta:
@@ -77,13 +98,16 @@ class Stadium(models.Model):
 
 class Tournament(models.Model):
     name = models.CharField(max_length=500)
-    team = models.ForeignKey('Team') #meant to be for fav teams only
+    league = models.CharField(max_length=20, choices = (('NBA', 'NBA'),
+                                                       ('MLB', 'MLB'),
+                                                       ('NFL', 'NFL')))
     standings_link = models.CharField(max_length=500, null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
     start_date = models.DateField(auto_now_add=True)
     end_date = models.DateField(default='2025-12-01')
     class Meta:
-        ordering = ['-start_date']
-        unique_together = ["name", "team"]
+        ordering = ['-created']
+        unique_together = ["name", "league"]
 
     def __unicode__(self):
         return u'%s' % self.name
@@ -97,16 +121,17 @@ class Schedule(models.Model):
     team_against = models.ForeignKey('Team', related_name='agn+')
     stadium = models.ForeignKey('Stadium')
     team_score = models.IntegerField(default=0)
-    against_score = models.IntegerField(default=0)
-    home = models.BooleanField(default=True)
+    team_against_score = models.IntegerField(default=0)
+    is_home = models.BooleanField(default=True)
     date = models.DateTimeField()
     recap_link =  models.CharField(max_length=500, null=True, blank=True) 
     
     class Meta:
         ordering = ['-date']
+        unique_together = ["tournament", "team", "team_against", "is_home", "date"]
 
     def __unicode__(self):
-        if self.home == True :
+        if self.is_home == True :
             str1 = u"{} vs {}".format(self.team, self.team_against)
         else:
             str1 = u"{} vs {}".format(self.team_against, self.team)
@@ -117,14 +142,15 @@ class Schedule(models.Model):
 
 class Position(models.Model):
     name = models.CharField(max_length=50, null=True, blank=True)
-    acronym = models.CharField(max_length=10, unique=True)
+    acronym = models.CharField(max_length=10)
     created = models.DateTimeField(auto_now_add=True) 
     
     class Meta:
         ordering = ['-created']
+        unique_together = ["name", "acronym"]
 
     def __unicode__(self):
-        return u'%s' % self.acronym
+        return u'%s' % self.name
 
     #def get_absolute_url(self):
     # return reverse('myfavteam.views.team', args=[self.team_name])
@@ -141,14 +167,13 @@ class Player(models.Model):
     height = models.FloatField(default=0.0)
     weight = models.FloatField(default=0.0)
     created = models.DateTimeField(auto_now_add=True)
-    #we shouldn't use age, but sometimes is easier to fill than bday
-    age = models.IntegerField(default=0)
     image = models.ImageField(null=True, blank=True)
     salary = models.IntegerField(default=0)
+    college = models.CharField(max_length=100, null=True, blank=True)
 
     class Meta:
         ordering = ['-last_name']
-        unique_together = ["position", "team", "first_name", "last_name"]
+        unique_together = ["team", "first_name", "last_name", "jersey_number"]
 
     def __unicode__(self):
         str1 = u"{} {}".format(self.first_name, self.last_name)
@@ -156,6 +181,9 @@ class Player(models.Model):
 
     def get_absolute_url(self):
         return reverse('myfavteam.views.player', args=[str(self.id)])
+
+    def age(self):
+        return int((datetime.date.today() - self.birthdate).days / 365.25)
 
 class PlayerNews(models.Model):
     news = models.ForeignKey('News')
@@ -216,7 +244,26 @@ class Standings(models.Model):
     team = models.ForeignKey('Team')
     wins = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
-    draws = models.IntegerField(default=0)
+    ties = models.IntegerField(default=0)
+    conference_wins = models.IntegerField(default=0)
+    conference_losses = models.IntegerField(default=0)
+    conference_ties = models.IntegerField(default=0) 
+    division_wins = models.IntegerField(default=0)
+    division_losses = models.IntegerField(default=0)
+    division_ties = models.IntegerField(default=0)
+    home_wins = models.IntegerField(default=0)
+    home_losses = models.IntegerField(default=0)
+    home_ties = models.IntegerField(default=0)
+    road_wins = models.IntegerField(default=0)
+    road_losses = models.IntegerField(default=0)
+    road_ties = models.IntegerField(default=0)
+    last10_wins = models.IntegerField(default=0)
+    last10_losses = models.IntegerField(default=0)
+    last10_ties = models.IntegerField(default=0)
+    last5_wins = models.IntegerField(default=0)
+    last5_losses = models.IntegerField(default=0)
+    last5_ties = models.IntegerField(default=0)
+    streak = models.CharField(max_length=5, null=True, blank=True)
 
     class Meta:
         unique_together = ["tournament", "team"]
@@ -232,6 +279,13 @@ class BasketballPlayerStats(models.Model):
     rebounds_per_game = models.FloatField(default=0.0)
     assists_per_game = models.FloatField(default=0.0)
     minutes_per_game = models.FloatField(default=0.0)
+    field_goals_pct = models.FloatField(default=0.0)
+    field_goals_3pt_pct = models.FloatField(default=0.0) 
+    free_throw_pct = models.FloatField(default=0.0)
+    steals_per_game = models.FloatField(default=0.0)
+    turnovers_per_game = models.FloatField(default=0.0)
+    fouls_per_game = models.FloatField(default=0.0)
+    
 
     class Meta:
         unique_together = ["tournament", "player"]
@@ -239,5 +293,4 @@ class BasketballPlayerStats(models.Model):
     def __unicode__(self):
         str1 = u"{} - PPG: {}".format(self.player, self.points_per_game)
         return u'%s' % str1
-
 

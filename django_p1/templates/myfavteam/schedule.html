@@ -17,15 +17,15 @@
             {% for game in games %}
               <tr>
                 <td>{{game.date}}</td>
-                {% if game.home %}
-                  <td>@ {{game.team_against}}</td>
-                {% else %}
+                {% if game.is_home %}
                   <td>vs {{game.team_against}}</td>
+                {% else %}
+                  <td>@ {{game.team_against}}</td>
                 {% endif %}
-                {%if game.team_score == 0 and game.against_score == 0 %}
+                {%if game.team_score == 0 and game.team_against_score == 0 %}
                   <td>-</td>
                 {% else %}
-                <td>{%if game.team_score > game.against_score%}W{%else%}L{%endif%} {{game.team_score}} : {{game.against_score}}</td>
+                <td>{%if game.team_score > game.team_against_score%}W{%else%}L{%endif%} {{game.team_score}} : {{game.team_against_score}}</td>
                 {% endif %}
               </tr>
               {% endfor %}

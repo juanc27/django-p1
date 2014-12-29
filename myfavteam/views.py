@@ -1,7 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import Http404
 from django.utils import timezone
-from myfavteam.models import *
+from django.db.models import Avg, Max, Min
+from myfavteam.models import Team, News, Stadium, Tournament, Schedule, Position
+from myfavteam.models import Player, PlayerNews, TournamentTeam, TeamPicture, Website
+from myfavteam.models import Standings, BasketballPlayerStats
 import datetime
 import copy
 
@@ -33,7 +36,7 @@ def index(request, team_id = 0):
 
     #Standings
     s = StandingList()
-    resp_dict['standings'] = s.get_standings(cdata.tournament_id, 5) 
+    resp_dict['standings'] = s.get_standings_conf(cdata.tournament_id, cdata.team.conference, 5) 
 
     #Stats
     st = StatsList()
@@ -70,7 +73,7 @@ def standings(request, team_id = 0):
     cdata = CommonData(resp_dict, team_id)
 
     s = StandingList()
-    resp_dict['standings'] = s.get_standings(cdata.tournament_id, 5)
+    resp_dict['standings'] = s.get_standings_conf(cdata.tournament_id, cdata.team.conference, 32)
 
     return render(request, 'myfavteam/standings.html', resp_dict)
 
@@ -79,7 +82,7 @@ def stats(request, team_id = 0):
     cdata = CommonData(resp_dict, team_id)
 
     st = StatsList()
-    resp_dict['stats'] = st.get_stats(cdata.team_id, 5)
+    resp_dict['stats'] = st.get_stats(cdata.team_id, 15)
 
     return render(request, 'myfavteam/stats.html', resp_dict)
 
@@ -88,7 +91,7 @@ def roster(request, team_id = 0):
     cdata = CommonData(resp_dict, team_id)
 
     r = PlayerList()
-    resp_dict['roster'] = r.get_roster(cdata.team_id, 5)
+    resp_dict['roster'] = r.get_roster(cdata.team_id, 15)
     return render(request, 'myfavteam/roster.html', resp_dict)
 
 def player(request, player_id=1):
@@ -98,6 +101,11 @@ def player(request, player_id=1):
     player_id = int(player_id)
     p = PlayerList()
     resp_dict['player'] = p.get_player(player_id)
+    try:
+        resp_dict['team'] = resp_dict['player'].team
+    except:
+        resp_dict['team'] = resp_dict['player']['team']
+
     st = StatsList()
     resp_dict['stats'] = st.get_player_stats(player_id)
     n = NewsList()
@@ -112,7 +120,12 @@ class CommonData():
          
         self.team = resp_dict['team'] = get_myteam_or_default_or_404(int(team_id))
         self.team_id = get_id_or_0(self.team)
-        self.tournament = resp_dict['tournament'] = get_current_tournament(self.team_id)
+        if self.team == None:
+            self.league = None
+        else:
+            self.league = self.team.league
+            
+        self.tournament = resp_dict['tournament'] = get_current_tournament(self.league)
         self.tournament_id = get_id_or_0(self.tournament)
 
 def add_navbar_data(resp_dict):
@@ -133,9 +146,9 @@ def get_id_or_0(query_set):
             id = 0
     return id
 
-def get_current_tournament(team_id):
+def get_current_tournament(league):
     try:
-        tournament = Tournament.objects.filter(team=team_id).order_by('-start_date')[0]
+        tournament = Tournament.objects.filter(league=league).order_by('-start_date')[0]
     except:
         tname = "Regular Season {}".format(datetime.datetime.now().year)
         tournament = {'id': 0, 'name': tname}
@@ -144,12 +157,12 @@ def get_current_tournament(team_id):
 def get_myteam_or_default_or_404(team_id):
     if team_id > 0:
         try:
-            team = Team.objects.get(id = team_id)
+            team = Team.objects.get(id = team_id, my_team=True)
         except:
             raise Http404
     elif team_id == 0:
         try:
-            team = Team.objects.order_by('created')[0]
+            team = Team.objects.filter(my_team=True).order_by('created')[0]
         except:
             team = None
         
@@ -176,11 +189,31 @@ def get_query_or_def_values(amount, query, ret_list):
             del ret_list[amount:]
         return ret_list
 
-def get_one_val_or_none(query, ret_list, val_id):
+def get_id_val_or_none(query, ret_list, val_id):
     count = query.count()
 
     try:
         ret = query.filter(id=val_id)[0]
+    except:
+        if ret_list == None:
+            return None
+
+        if count >= len(ret_list):
+            ret = None
+        else:
+            try:
+                ret = ret_list[val_id-1]
+            except:
+                ret = None
+
+    return ret
+
+"""different in that the query is alreay formed """
+def get_one_val_or_none(query, ret_list, val_id):
+    count = query.count()
+
+    try:
+        ret = query[0]
     except:
         if ret_list == None:
             return None
@@ -227,7 +260,7 @@ class Games:
         now = timezone.now()
 
         if next == True:
-            query = Schedule.objects.filter(team=team_id, date__gt=now)
+            query = Schedule.objects.filter(team=team_id, date__gt=now).order_by('date')
             ret_list = list(self.next_games)
         else:
             query = Schedule.objects.filter(team=team_id, date__lt=now)
@@ -298,10 +331,10 @@ class NewsList:
 
 class PlayerList:
     def __init__(self):
-        self.players = [{'team': 'MyFavTeam',
+        self.players = [{'team': {'short':'MyFavTeam'},
                          'first_name': 'John',
                          'last_name': 'Doe',
-                         'position': 'G',
+                         'position': {'name': 'Guard', 'acronym' : 'G'},
                          'birthdate' : datetime.date(1984, 11, 18),
                          'twitter' : 'johndoe',
                          'facebook' : "https://www.facebook.com/JhonDoe",
@@ -313,10 +346,10 @@ class PlayerList:
                          'jersey_number': 23,
                          'get_absolute_url': "/player/1/",
                         },
-                        {'team': 'MyFavTeam',
+                        {'team': {'short':'MyFavTeam'},
                          'first_name': 'David',
                          'last_name': 'Smith',
-                         'position': 'F',
+                         'position': {'name': 'Forward', 'acronym' : 'F'},
                          'birthdate' : datetime.date(1986, 11, 18),
                          'twitter' : 'davidsmith',
                          'facebook' : "https://www.facebook.com/DavidSmith",
@@ -328,10 +361,10 @@ class PlayerList:
                          'jersey_number': 32,
                          'get_absolute_url': '/player/2/',
                         },
-                        {'team': 'MyFavTeam',
+                        {'team': {'short':'MyFavTeam'},
                          'first_name': 'Tim',
                          'last_name': 'Brown',
-                         'position': 'C',
+                         'position': {'name': 'Center', 'acronym' : 'C'},
                          'birthdate' : datetime.date(1988, 11, 18),
                          'twitter' : 'timbrown',
                          'facebook' : "https://www.facebook.com/TimBrown",
@@ -346,7 +379,7 @@ class PlayerList:
                        ]
 
     def get_roster(self, team_id, amount):
-        query = Player.objects.filter(team=team_id).order_by('salary')
+        query = Player.objects.filter(team=team_id).order_by('-salary')
         ret_list = list(self.players)
         
         return get_query_or_def_values(amount, query, ret_list)
@@ -355,7 +388,7 @@ class PlayerList:
         query = Player.objects
         ret_list = list(self.players)
 
-        return get_one_val_or_none(query, ret_list, player_id)
+        return get_id_val_or_none(query, ret_list, player_id)
     
    
 class StandingList:
@@ -365,7 +398,7 @@ class StandingList:
                       'team': 'MyFavTeam',
                       'wins' : 14,
                       'losses': 6,
-                      'draws': 0,
+                      'ties': 0,
                       'win_pct': 0.7,
                       'games_behind': 0,
                      },
@@ -373,7 +406,7 @@ class StandingList:
                       'team': 'Rival',
                       'wins' : 12,
                       'losses': 8,
-                      'draws': 0,
+                      'ties': 0,
                       'win_pct': 0.6,
                       'games_behind': 2,
                      },
@@ -381,7 +414,7 @@ class StandingList:
                       'team': 'DecentContender',
                       'wins' : 10,
                       'losses': 10,
-                      'draws': 0,
+                      'ties': 0,
                       'win_pct': 0.5,
                       'games_behind': 4,
                      },
@@ -389,24 +422,51 @@ class StandingList:
                       'team': 'aBadTeam',
                       'wins' : 6,
                       'losses': 14,
-                      'draws': 0,
+                      'ties': 0,
                       'win_pct': 0.3,
                       'games_behind': 8,
                      },
                     ]
 
     def get_standings(self, tournament_id, amount):
-        #should use django annotate
+        #django annotate doesn't support substraction
         diff = Standings.objects.raw(
                         'SELECT *, MAX(wins-losses) AS max FROM myfavteam_standings ' \
                         'WHERE tournament_id = %s ', [tournament_id])[0].max
         if diff == None:
             diff = 0 
         query = Standings.objects.raw(
-                        'SELECT *, 1.0*wins/(wins + losses + 0.5*draws) AS win_pct, '\
+                        'SELECT *, 1.0*wins/(wins + losses + 0.5*ties) AS win_pct, '\
                         '(%s - (wins-losses)) / 2.0 AS games_behind ' \
                         'FROM myfavteam_standings WHERE tournament_id = %s ' \
                         'ORDER BY -win_pct', [diff, tournament_id])
+        ret_list = list(self.teams)
+
+        return get_query_or_def_values(amount, query, ret_list)
+
+    def get_standings_conf(self, tournament_id, conference, amount):
+        #django annotate doesn't support substraction
+        diff = Standings.objects.extra(
+                        select = {'max' : 'MAX(wins-losses)'}, 
+                        where = ['tournament_id = %s', 
+                                 'myfavteam_team.conference=%s', 
+                                 'team_id = myfavteam_team.id'],
+                        params = [tournament_id, conference], 
+                        tables = ['myfavteam_team'])[0].max
+        if diff == None:
+            diff = 0
+       
+        query = Standings.objects.extra(
+                        select = {'win_pct' : '1.0*wins/(wins + losses + 0.5*ties)', 
+                                  'games_behind' : "(%s - (wins-losses))/2.0"}, 
+                        select_params =[diff], 
+                        where = ['tournament_id = %s', 
+                                 'myfavteam_team.conference=%s', 
+                                 'team_id=myfavteam_team.id'], 
+                        params = [tournament_id, conference], 
+                        tables = ['myfavteam_team'], 
+                        order_by=['-win_pct'])
+
         ret_list = list(self.teams)
 
         return get_query_or_def_values(amount, query, ret_list)
@@ -422,7 +482,7 @@ class StatsList(PlayerList):
             self.players[i]['points_per_game'] = ppg + 2*i
             self.players[i]['rebounds_per_game'] = rpg + 2*i
             self.players[i]['assists_per_game'] = apg - 2*i
-            self.players[i]['minutes_per_game'] = mpg - i
+            self.players[i]['steals_per_game'] = mpg - i
 
     def get_stats(self, team_id, amount):
         #change if sport is not BasketBall
@@ -432,16 +492,18 @@ class StatsList(PlayerList):
                      'myfavteam_basketballplayerstats.points_per_game AS points_per_game,' \
                      'myfavteam_basketballplayerstats.rebounds_per_game AS rebounds_per_game,' \
                      'myfavteam_basketballplayerstats.assists_per_game AS assists_per_game, ' \
-                     'myfavteam_basketballplayerstats.minutes_per_game AS minutes_per_game ' \
+                     'myfavteam_basketballplayerstats.steals_per_game AS steals_per_game ' \
                      'FROM myfavteam_player LEFT JOIN myfavteam_basketballplayerstats ' \
-                     'WHERE myfavteam_player.team_id = %s ORDER BY minutes_per_game', [team_id])
+                     'ON myfavteam_player.id = myfavteam_basketballplayerstats.player_id '\
+                     'WHERE myfavteam_player.team_id = %s ORDER BY points_per_game DESC', 
+                     [team_id])
 
         ret_list = list(self.players)
 
         return get_query_or_def_values(amount, query, ret_list) 
 
     def get_player_stats(self, player_id):
-        query = BasketballPlayerStats.objects
+        query = BasketballPlayerStats.objects.filter(player_id = player_id)
         #first verify the player exist in db
         try:
             Player.objects.get(id=player_id)

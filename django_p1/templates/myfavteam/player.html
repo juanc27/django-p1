@@ -24,7 +24,22 @@
           <tr><th>Salary: </th><td>$ {%if player.salary > 999999%}{{player.salary|intword}}{%else%}{{player.salary|intcomma}}{%endif%} per year</td></tr>
           <tr><th>Height: </th><td>{{player.height|floatformat:1}}</td></tr>
           <tr><th>Weight: </th><td>{{player.weight|floatformat:0}}</td></tr>
-          <tr><th>Twitter: </th><td><a href="https://twitter.com/{{player.twitter}}">@{{player.twitter}}</a></td></tr>
+          <tr>
+            <th>College: </th>
+              {% if player.college %}
+                <td>{{player.college}}</td>
+              {% else %}
+                <td>-</td>
+              {% endif %}
+          </tr>
+          <tr>
+            <th>Twitter: </th>
+              {% if player.twitter %}
+                <td><a href="https://twitter.com/{{player.twitter}}">@{{player.twitter}}</a></td>
+              {% else %}
+                <td>-</td>
+              {% endif %}
+          </tr>
         </tbody>
       </table>
         <h4>Stats - Current Tournament</h4>
@@ -34,7 +49,7 @@
                 <th>PPG</th>
                 <th>RPG</th>
                 <th>APG</th>
-                <th>MPG</th>
+                <th>SPG</th>
               </tr>
             </thead>
             <tbody>
@@ -43,7 +58,7 @@
                 <td>{{stats.points_per_game|floatformat:1}}</td>
                 <td>{{stats.rebounds_per_game|floatformat:1}}</td>
                 <td>{{stats.assists_per_game|floatformat:1}}</td>
-                <td>{{stats.minutes_per_game|floatformat:1}}</td>
+                <td>{{stats.steals_per_game|floatformat:1}}</td>
                 {% else %}
                 <td>0.0</td>
                 <td>0.0</td>
@@ -89,6 +104,7 @@
     <div class="col-md-1"></div>
     </div>
 <!-----SOCIAL---->
+    {% if player.twiter %}
     <h2 align="center">@{{player.twitter}}</h2>
     <div class="row">
       <div class="col-md-3">
@@ -106,6 +122,7 @@
       </div>
       <div class="col-md-3">
     </div>
+    {% endif %}
 </div>
 {% else %}
     <h2 align="center"> Player Not Found </h2>

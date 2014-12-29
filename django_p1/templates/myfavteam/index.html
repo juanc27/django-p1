@@ -18,7 +18,7 @@
             <div class="container">
               <div class="carousel-caption">
                 <p>Next Game</p>
-                {% if next_game.home %}
+                {% if next_game.is_home %}
                   <h2>{{next_game.team}} vs {{next_game.team_against}}</h2>
                 {% else %}
                   <h2>{{next_game.team_against}} vs {{next_game.team}}</h2>
@@ -42,10 +42,10 @@
             <div class="container">
               <div class="carousel-caption">
                 <p>Last Result</p>
-                {% if last_game.home %}
-                  <h2>{{last_game.team}} {{last_game.team_score}} : {{last_game.team_against}} {{last_game.against_score}}</h2>
+                {% if last_game.is_home %}
+                  <h2>{{last_game.team}} {{last_game.team_score}} : {{last_game.team_against}} {{last_game.team_against_score}}</h2>
                 {% else %}
-                  <h2>{{last_game.team_against}} {{last_game.against_score}} : {{last_game.team}} {{last_game.team_score}}</h2>
+                  <h2>{{last_game.team_against}} {{last_game.team_against_score}} : {{last_game.team}} {{last_game.team_score}}</h2>
                 {% endif %}
                 <p>{{last_game.date}}</p>
                 <p>{{last_game.stadium.name}}, {{last_game.stadium.city}}</p>
@@ -108,7 +108,7 @@
           <h2><a class="a_no_color" 
                  {% if team %}
                    href="{{team.get_schedule_url}}"
-                 {% else %}                   
+                 {% else %} 
                    href="/schedule/"
                  {%endif%}
               >Schedule</a></h2>
@@ -118,10 +118,10 @@
             </div>
             {% for next_games in next_games %}
               <div class="list-group-item">
-              {% if next_games.home %}
-                  <h4 class="list-group-item-heading">@ {{next_games.team_against}}</h4>
-              {% else %}
+              {% if next_games.is_home %}
                   <h4 class="list-group-item-heading">vs {{next_games.team_against}}</h4>
+              {% else %}
+                  <h4 class="list-group-item-heading">@ {{next_games.team_against}}</h4>
               {%endif%}
                 <p class="list-group-item-text">{{next_games.date}} - {{next_games.stadium.name}} </p>
                 </div>
@@ -129,10 +129,10 @@
             <div class="list-group-item active">
               <h4 class="list-group-item-heading">Last Results</h4>
             </div>            
-            {% for last_games in last_games %}
+            {% for last_game in last_games %}
                 <div class="list-group-item">
-                <h4 class="list-group-item-heading">{{last_games.team}} {{last_games.team_score}} : {{last_games.team_against}} {{last_games.against_score}}</h1>
-                <p class="list-group-item-text">{{last_games.date|date:"M. d, Y"}}</p>
+                <h4 class="list-group-item-heading">{%if last_game.team_score > last_game.team_against_score%}W{%else%}L{%endif%} {{last_game.team_score}} : {{last_game.team_against_score}} {% if last_game.is_home %} vs {% else %} @ {%endif%} {{last_game.team_against}}</h4>
+                <p class="list-group-item-text">{{last_game.date|date:"M. d, Y"}}</p>
                 </div>
             {% endfor %}
           </div>
@@ -147,7 +147,14 @@
                    href="/stats/"
                  {%endif%}
               >Stats</a></h2>
-          {% include 'myfavteam/table_stats.html' %}
+          {% include 'myfavteam/table_stats_index.html' %}
+          <p><a class="btn btn-default" role="button"
+             {% if team %}
+               href="{{team.get_stats_url}}"
+             {% else %}
+               href="/stats/"
+             {%endif%}
+             >More</a></p>
         </div>
         <div class="col-md-4">
           <h2><a class="a_no_color"
@@ -167,7 +174,7 @@
                    href="/roster/"
                  {%endif%}
               >Roster</a></h2>
-          {% include 'myfavteam/table_roster.html' %} 
+          {% include 'myfavteam/table_roster_index.html' %} 
         </div>
       </div>
     </div> <!-- /container -->
