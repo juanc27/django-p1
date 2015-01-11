@@ -85,6 +85,11 @@ class TestNoTeam(TestCase):
         val = get_query_or_def_values(4, Player.objects.all(), [1])
         self.assertIsNotNone(val)
 
+    def test_get_id_val_or_none(self):
+        query = Player.objects
+        self.assertIsNone(get_id_val_or_none(query, None, 0)) 
+        self.assertIsNone(get_id_val_or_none(query, [], 0))
+
     def test_get_one_val_or_none(self):
         Team.objects.create(**test_team1)
         Position.objects.create(**test_positions)

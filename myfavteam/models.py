@@ -67,14 +67,15 @@ class News(models.Model):
     description = models.CharField(max_length=255)
     date = models.DateTimeField()
     link = models.CharField(max_length=500)
-    author = models.CharField(max_length=100)
+    author = models.CharField(max_length=100, null=True, blank=True)
     website = models.ForeignKey('Website')
-    cached_text = models.TextField()
+    text = models.TextField()
     image = models.ImageField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     
     class Meta:
         ordering = ['-date']
+        unique_together = ["link", "title"]
 
     def __unicode__(self):
         return u'%s' % self.title
@@ -294,3 +295,9 @@ class BasketballPlayerStats(models.Model):
         str1 = u"{} - PPG: {}".format(self.player, self.points_per_game)
         return u'%s' % str1
 
+class TwitterLists(models.Model):
+    name = models.CharField(max_length=50, null=True, blank=True)
+    type = models.CharField(max_length=20, choices = (('main', 'main'),
+                                                      ('players', 'players'),
+                                                      ('insiders', 'insiders'),
+                                                      ('staff', 'staff'))) 

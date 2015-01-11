@@ -5,7 +5,6 @@ from myfavteam.scrappers.nba import getESPN_dot_com_Roster
 from myfavteam.models import Team, Player, Position
 from _utils import compare_field, check_and_update_field
 
-
 def print_player (player):
     print "First Name: {} Last Name: {} Position: {} JNumber: {} Bday: {} Height: {} Weight: {}".format(player['first_name'], player['last_name'],
                  player['position'], player['jersey_number'],
@@ -17,7 +16,7 @@ def find_position(position):
         id = Position.objects.get(name=position).id
         return id
     except:
-        print("position = {} not found")
+        print "position = {} not found".format(position)
         raise
     
 def create_positions(roster):

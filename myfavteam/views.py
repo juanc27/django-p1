@@ -36,7 +36,7 @@ def index(request, team_id = 0):
 
     #Standings
     s = StandingList()
-    resp_dict['standings'] = s.get_standings_conf(cdata.tournament_id, cdata.team.conference, 5) 
+    resp_dict['standings'] = s.get_standings_conf(cdata.tournament_id, cdata.conference, 5) 
 
     #Stats
     st = StatsList()
@@ -49,7 +49,7 @@ def news(request, team_id = 0):
     cdata = CommonData(resp_dict, team_id)
 
     n = NewsList()
-    resp_dict['news'] = n.get_news(cdata.team_id, 5)
+    resp_dict['news'] = n.get_news(cdata.team_id, 50)
     
     return render(request, 'myfavteam/news.html', resp_dict)
 
@@ -73,7 +73,7 @@ def standings(request, team_id = 0):
     cdata = CommonData(resp_dict, team_id)
 
     s = StandingList()
-    resp_dict['standings'] = s.get_standings_conf(cdata.tournament_id, cdata.team.conference, 32)
+    resp_dict['standings'] = s.get_standings_conf(cdata.tournament_id, cdata.conference, 32)
 
     return render(request, 'myfavteam/standings.html', resp_dict)
 
@@ -122,8 +122,10 @@ class CommonData():
         self.team_id = get_id_or_0(self.team)
         if self.team == None:
             self.league = None
+            self.conference = None 
         else:
             self.league = self.team.league
+            self.conference = self.team.conference
             
         self.tournament = resp_dict['tournament'] = get_current_tournament(self.league)
         self.tournament_id = get_id_or_0(self.tournament)
@@ -300,7 +302,8 @@ class NewsList:
                       'link' : '#',
                       'author': 'myself',
                       'website': {'name': 'espn', 'link': "http://espn.go.com"},
-                      'image': {'url': 'holder.js/90x62/auto/#666:#999/text: image'},
+                      'image': 'holder.js/90x62/auto/#666:#999/text: image',
+#                      'image': {'url': 'http://a.espncdn.com/media/motion/2015/0103/dm_150103_NBA_Top_Plays/dm_150103_NBA_Top_Plays.jpg'},
                      },
                      {'team': 'MyFavTeam',
                     'title': 'News2: MyFavTeam App also collects stats from a trusted web source',
@@ -308,7 +311,7 @@ class NewsList:
                       'link' : '#',
                       'author': 'myself2',
                       'website': {'name': 'yahoo sports', 'link': "http://sports.yahoo.com"},
-                      'image': {'url': 'holder.js/90x62/auto/#555:#888/text: image'},
+                      'image': 'holder.js/90x62/auto/#555:#888/text: image',
                      },
                     ]
 

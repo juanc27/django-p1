@@ -4,61 +4,85 @@
      
 {% block content %}
 <div class="container">
-  <h2 align="center">Tweets from everybody</h2>
   <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-1">
     </div>
-    <div class="col-md-6">
-  <a class="twitter-timeline" href="https://twitter.com/hashtag/myfavteamapp" 
-     data-widget-id="532304836914475009"
-     width="900"
-     height="300">#myfavteamapp from Everybody</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    <div class="col-md-5">
+    <h2 align="center">Main</h2>
+    {% if team %}
+      <a class="twitter-timeline" 
+         href="https://twitter.com/myfavteamapp/lists/{{team.short_name}}"
+         data-widget-id="554319118124711936"
+         data-list-owner-screen-name = "myfavteamapp"
+         data-list-slug = "{{team.short_name}}"
+         data-show-replies="false"
+         data-chrome="noheader"
+         width="900"
+         height="350">{{team.short_name}}</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>      
+    {% else %}
+      {% include 'myfavteam/twitter_list.html' %}
+    {% endif %}
     </div>
-    <div class="col-md-3">
-    </div>
-    </div>
+    <div class="col-md-5">
     <h2 align="center">Insiders</h2>
-  <div class="row">
-    <div class="col-md-3">
-    </div>
-    <div class="col-md-6">
-  <a class="twitter-timeline" href="https://twitter.com/hashtag/myfavteamapp"
-     data-widget-id="532304836914475009"
-     width="900"
-     height="300">#myfavteamapp from Everybody</a>
+    {% if team %}
+      <a class="twitter-timeline"
+         href="https://twitter.com/myfavteamapp/lists/{{team.short_name}}-insiders"
+         data-widget-id="554319118124711936"
+         data-list-owner-screen-name = "myfavteamapp"
+         data-list-slug = "{{team.short_name}}-insiders"
+         data-show-replies="false"
+         data-chrome="noheader"
+         width="900"
+         height="350">{{team.short_name}} Insiders</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    {% else %}
+      {% include 'myfavteam/twitter_list.html' %}
+    {% endif %}
     </div>
-    <div class="col-md-3">
+    <div class="col-md-1">
     </div>
+  </div>
+  <div class="row">
+    <div class="col-md-1">
     </div>
+    <div class="col-md-5">
     <h2 align="center">Players</h2>
-  <div class="row">
-    <div class="col-md-3">
-    </div>
-    <div class="col-md-6">
-  <a class="twitter-timeline" href="https://twitter.com/hashtag/myfavteamapp"
-     data-widget-id="532304836914475009"
-     width="900"
-     height="300">#myfavteamapp from Everybody</a>
+    {% if team %}
+      <a class="twitter-timeline"
+         href="https://twitter.com/myfavteamapp/lists/{{team.short_name}}-players"
+         data-widget-id="554319118124711936"
+         data-list-owner-screen-name = "myfavteamapp"
+         data-list-slug = "{{team.short_name}}-players"
+         data-show-replies="false"
+         data-chrome="noheader"
+         width="900"
+         height="350">{{team.short_name}} Insiders</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    {% else %}
+      {% include 'myfavteam/twitter_list.html' %}
+    {% endif %}
     </div>
-    <div class="col-md-3">
-    </div>
-    </div>
+    <div class="col-md-5">
     <h2 align="center">Staff</h2>
-  <div class="row">
-    <div class="col-md-3">
-    </div>
-    <div class="col-md-6">
-  <a class="twitter-timeline" href="https://twitter.com/hashtag/myfavteamapp"
-     data-widget-id="532304836914475009"
-     width="900"
-     height="300">#myfavteamapp from Everybody</a>
+    {% if team %}
+      <a class="twitter-timeline"
+         href="https://twitter.com/myfavteamapp/lists/{{team.short_name}}-staff"
+         data-widget-id="554319118124711936"
+         data-list-owner-screen-name = "myfavteamapp"
+         data-list-slug = "{{team.short_name}}-staff"
+         data-show-replies="false"
+         data-chrome="noheader"
+         width="900"
+         height="350">{{team.short_name}} Insiders</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    {% else %}
+      {% include 'myfavteam/twitter_list.html' %}
+    {% endif %}
     </div>
     <div class="col-md-3">
     </div>
-    </div>
+  </div>
 </div> <!-- /container -->
 {% endblock %}

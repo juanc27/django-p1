@@ -74,13 +74,16 @@
               >News</a></h2>
           {% for news in news %}
            <div class="row">
-               <div class="col-md-3">
+               <div class="col-md-3 my_news_img_col">
                    <a href="{{news.link}}">
-                      {% if news.image %}
-                      <img class="" src="{{news.image.url}}" alt="" height="62" />
-                      {% else %}
-                      <img class="" src="holder.js/90x62/auto/#666:#999/text: image" alt="" height="62" />
-                      {% endif%}
+                     <!--  src="{{news.image.url}}" -->
+                     <img class="my_news_index_img"
+                       {% if news.image %}
+                         src="{{news.image}}"
+                       {% else %}
+                         src="holder.js/90x62/auto/#444:#777/text: image"
+                       {% endif%}
+                     />
                    </a>
                </div>
                <div class="col-md-9">
@@ -100,10 +103,24 @@
                    href="/social/"
                  {%endif%}
               >Social</a></h2>
-
-          <a class="twitter-timeline" href="https://twitter.com/hashtag/myfavteamapp" data-widget-id="532304836914475009">#myfavteamapp Tweets</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-       </div>
+          {% if team %}
+          <a class="twitter-timeline" 
+             href="https://twitter.com/myfavteamapp/lists/{{team.short_name}}" 
+             data-widget-id="554319118124711936"
+             data-list-owner-screen-name = "myfavteamapp"
+             data-list-slug = "{{team.short_name}}"
+             data-show-replies="false"
+             height="350"
+             data-chrome="noheader">{{team.short_name}}</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+          {% else %}
+          <a class="twitter-timeline" 
+             href="https://twitter.com/hashtag/myfavteamapp" 
+             data-widget-id="554330505450385408"
+             height="350">#myfavteamapp Tweets</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+          {% endif %}
+        </div>
         <div class="col-md-4">
           <h2><a class="a_no_color" 
                  {% if team %}

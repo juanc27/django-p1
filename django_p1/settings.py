@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'myfavteam',
     'myfavteam.scrappers',
+    'myfavteam.news',
 )
 
 MIDDLEWARE_CLASSES = (

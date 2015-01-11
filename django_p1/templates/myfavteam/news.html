@@ -10,24 +10,30 @@
     {% for news in news %}
            <li class="divider"></li>
            <div class="row">
-               <div class="col-md-2">
+               <div class="col-md-2 my_news_img_col">
                    <a href="{{news.link}}">
-                      {% if news.image %}
-                      <img class="my_news_img" src="{{news.image.url}}"/>
-                      {% else %}
-                      <img class="my_news_img" src="{{STATIC_URL}}holder.js/356x200/auto/#666:#999/text: image"/>
-                      {% endif %}
+                      <!--  src="{{news.image.url}}" -->
+                      <img 
+                        class="my_news_img" 
+                        {% if news.image %}
+                          src="{{news.image}}"
+                        {% else %}
+                          src="{{STATIC_URL}}holder.js/356x200/auto/#666:#999/text: image"
+                        {% endif %}
+                      >
                    </a>
                </div>
                <div class="col-md-10 my_news_col">
                    <a class="a_news_color" href="{{news.link}}"><h2>{{news.title}}</h2></a>
                    {% if news.description %}
-                   <p font-style="italic"> {{news.description}}</p>
+                   <!-- p font-style="italic"> {{news.description}}</p> -->
                    {% endif %}
-                   {% if news.cached_text %}
-                   <p>{{ news.cached_text|truncatewords:50}}</p>
+                   {% if news.text %}
+                   <p>{{news.text|truncatewords:100}}</p>
                    {% endif %}
-                   <div class="my-news-website-txt"> <a class="a_no_color" href="{{news.website.link}}">{{news.website.name}}</a> - {{ news.date|timesince }} ago </div>
+                   <div class="my-news-website-txt"> 
+                     <a class="a_no_color" 
+                        href="{{news.website.link}}">{{news.website.name}}</a> - {{ news.date|timesince }} ago </div>
                </div>
            </div>
     {% endfor %}
