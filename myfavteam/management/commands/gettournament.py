@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.db import models
-from myfavteam.scrappers.nba import getNBA_dot_com_CurrentTournament
+from scrappers.nba import getNBA_dot_com_CurrentTournament
 from myfavteam.models import Team, Tournament
 
 """Create the tournament in db if it doesn't exist"""

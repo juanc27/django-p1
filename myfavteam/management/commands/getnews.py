@@ -1,9 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.db import models
 import sys
-from django.conf import settings
-sys.path.append(settings.PROJECT_ROOT + '/myfavteam/news/venv/lib/python2.7/site-packages')
-from myfavteam.news.nba_news import getESPN_dot_com_team_news, getNBA_dot_com_team_news
+from news.nba_news import getESPN_dot_com_team_news, getNBA_dot_com_team_news
 from myfavteam.models import Team, Player, Website, News, PlayerNews
 from _utils import compare_field, check_and_update_field
 from django.utils.dateparse import parse_datetime

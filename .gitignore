@@ -1,7 +1,8 @@
 # Myfiles and directories
 ############
 myfavteam/media/*
-myfavteam/news/venv/*
+news/venv/*
+myfavteam.db
 
 
 # Compiled source #

@@ -1,5 +1,5 @@
 """
-Django settings for django_p1 project.
+Django settings for mysite project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.7/topics/settings/
@@ -39,8 +39,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'myfavteam',
-    'myfavteam.scrappers',
-    'myfavteam.news',
+    'scrappers',
+    'news',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -53,9 +53,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'django_p1.urls'
+ROOT_URLCONF = 'mysite.urls'
 
-WSGI_APPLICATION = 'django_p1.wsgi.application'
+WSGI_APPLICATION = 'mysite.wsgi.application'
 
 
 # Database

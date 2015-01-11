@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.db import models
-from myfavteam.scrappers.nba import getNBA_dot_com_PlayerStats
-from myfavteam.scrappers.nba import getNBA_dot_com_PlayerStatsCurrentTournament
+from scrappers.nba import getNBA_dot_com_PlayerStats
+from scrappers.nba import getNBA_dot_com_PlayerStatsCurrentTournament
 from myfavteam.models import Team, Player, Tournament, BasketballPlayerStats
 from _utils import compare_field, find_tournament_id_or_raise
 

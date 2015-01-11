@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.db import models
-from myfavteam.scrappers.nba import getNBA_dot_com_Roster
-from myfavteam.scrappers.nba import getESPN_dot_com_Roster
+from scrappers.nba import getNBA_dot_com_Roster
+from scrappers.nba import getESPN_dot_com_Roster
 from myfavteam.models import Team, Player, Position
 from _utils import compare_field, check_and_update_field
 

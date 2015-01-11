@@ -4,7 +4,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
 
-from myfavteam.scrappers.nba import getNBA_dot_com_Schedule
+from scrappers.nba import getNBA_dot_com_Schedule
 from myfavteam.models import Team, Tournament, Schedule, Stadium
 
 from gettournament import find_or_create_tournament
