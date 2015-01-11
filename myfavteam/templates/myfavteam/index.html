@@ -165,13 +165,6 @@
                  {%endif%}
               >Stats</a></h2>
           {% include 'myfavteam/table_stats_index.html' %}
-          <p><a class="btn btn-default" role="button"
-             {% if team %}
-               href="{{team.get_stats_url}}"
-             {% else %}
-               href="/stats/"
-             {%endif%}
-             >More</a></p>
         </div>
         <div class="col-md-4">
           <h2><a class="a_no_color"

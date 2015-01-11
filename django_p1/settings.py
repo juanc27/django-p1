@@ -82,7 +82,7 @@ USE_L10N = True
 USE_TZ = True
 
 TEMPLATE_DIRS = (
-        os.path.join(PROJECT_ROOT, 'django_p1/templates'),
+        os.path.join(PROJECT_ROOT, 'myfavteam/templates'),
 )
 
 # Static files (CSS, JavaScript, Images)
