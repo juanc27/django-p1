@@ -102,9 +102,9 @@ def player(request, player_id=1):
     p = PlayerList()
     resp_dict['player'] = p.get_player(player_id)
     try:
-        resp_dict['team'] = resp_dict['player'].team
+        resp_dict['team_name'] = resp_dict['player'].team.short
     except:
-        resp_dict['team'] = resp_dict['player']['team']
+        resp_dict['team_name'] = resp_dict['player']['team']['short']
 
     st = StatsList()
     resp_dict['stats'] = st.get_player_stats(player_id)
@@ -238,14 +238,14 @@ class Games:
                             'stadium' : {'name': 'Our Stadium', 'city': 'Our City'},
                             'tournament': 'Tournament A',
                             'home': True, 'date' : now.replace(year=now.year+1),
-                            'team_score': 0, 'against_score': 0,
+                            'team_score': 0, 'team_against_score': 0,
                             'recap_link': '#',
                            },
                            {'team': 'MyFavTeam', 'team_against': 'Opponent2',
                             'stadium' : {'name': 'Their Stadium', 'city': 'City'},
                             'tournament': 'Tournament A',
                             'home': False, 'date' : now.replace(year=now.year+2),
-                            'team_score': 0, 'against_score': 0,
+                            'team_score': 0, 'team_against_score': 0,
                             'recap_link': '#',
                            }
                           ]
@@ -254,9 +254,9 @@ class Games:
         self.last_games[0]['date'] = now.replace(year=now.year-1)
         self.last_games[1]['date'] = now.replace(year=now.year-2)
         self.last_games[0]['team_score'] = 50
-        self.last_games[0]['against_score'] = 49
+        self.last_games[0]['team_against_score'] = 49
         self.last_games[1]['team_score'] = 99
-        self.last_games[1]['against_score'] = 100
+        self.last_games[1]['team_against_score'] = 100
 
     def get_games(self, team_id, amount, next=True):
         now = timezone.now()
