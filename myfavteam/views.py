@@ -449,13 +449,12 @@ class StandingList:
 
     def get_standings_conf(self, tournament_id, conference, amount):
         #django annotate doesn't support substraction
-        diff = Standings.objects.extra(
-                        select = {'max' : 'MAX(wins-losses)'}, 
-                        where = ['tournament_id = %s', 
-                                 'myfavteam_team.conference=%s', 
-                                 'team_id = myfavteam_team.id'],
-                        params = [tournament_id, conference], 
-                        tables = ['myfavteam_team'])[0].max
+        diff = Standings.objects.raw('SELECT *, MAX(wins-losses) AS max ' \
+                                     'FROM myfavteam_standings, myfavteam_team ' \
+                                     'WHERE myfavteam_standings.tournament_id = %s AND ' \
+                                           'myfavteam_team.conference = %s AND ' \
+                                           'myfavteam_standings.team_id = myfavteam_team.id', 
+                                     [tournament_id, conference])[0].max
         if diff == None:
             diff = 0
        
