@@ -33,6 +33,9 @@ class Team(models.Model):
                                           ('Pacific', 'Pacific'),
                                           ('Southwest', 'Southwest'),
                                          )) 
+    #display purposes
+    primary_color = models.CharField(max_length=6, null=True, blank=True)
+    secondary_color = models.CharField(max_length=6, null=True, blank=True)
 
     class Meta:
         ordering = ['created']

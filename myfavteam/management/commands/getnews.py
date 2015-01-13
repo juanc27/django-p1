@@ -44,13 +44,15 @@ def create_news(news, team_id, website_id):
                                     news['title'].encode('utf-8', 'replace'), news['link'])
         try:
             if news['date'] == None:
-                news['date'] = timezone.now()
+                date = timezone.now()
+            else:
+                date = parse_datetime(news['date'])
 
             n = News.objects.create(team_id = team_id,
                                 website_id = website_id,
                                 title = news['title'],
                                 description = news['description'],
-                                date = parse_datetime(news['date']),
+                                date = date,
                                 link = news['link'],
                                 author = news['author'],
                                 text = news['text'],

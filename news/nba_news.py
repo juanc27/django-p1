@@ -7,7 +7,6 @@ from collections import OrderedDict
 import pytz
 from pytz import timezone
 from dateutil.parser import parse
-import sys
 
 
 nba_url = "http://www.nba.com"
@@ -243,6 +242,10 @@ def getNBA_dot_com_team_news(team_short_name = None, visited_links = []):
         if url in visited_links:
             continue
 
+        #avoiding articles in other languages for nba.com/china/
+        if url.find("/china/") > -1:
+            continue
+
         article = Article(url, my_config)
         article.download()
         article.parse()
@@ -279,7 +282,6 @@ def getNBA_dot_com_team_news(team_short_name = None, visited_links = []):
 
 
 if __name__ == "__main__":
-    sys.path.append('news/venv/lib/python2.7/site-packages')    
-    getESPN_dot_com_team_news("warriors")
+#    getESPN_dot_com_team_news("warriors")
 #    getESPN_dot_com_team_news("jazz")
-#    getNBA_dot_com_team_news("warriors")
+    getNBA_dot_com_team_news("heat")

@@ -47,6 +47,9 @@ def update_create_player(player, team_id):
         if compare_field(db_player.weight, player, 'weight'):
             db_player.weight = player['weight']
 
+        if compare_field(db_player.image, player, 'image'):
+            db_player.image = player['image']
+
         position_id = find_position(player['position'])
         if position_id != db_player.position_id:
             db_player.position_id = position_id
@@ -65,7 +68,8 @@ def update_create_player(player, team_id):
                                   jersey_number = player['jersey_number'],
                                   birthdate = player['birthdate'],
                                   height = player['height'],
-                                  weight = player['weight']
+                                  weight = player['weight'],
+                                  image = player['image'],
                                   )
         except:
             print("Error inserting {} - {}".format(player['first_name'],
@@ -85,7 +89,7 @@ class Command(BaseCommand):
             create_positions(roster)
             for player in roster:
                 print("{} Roster".format(team.short_name))
-                print_player (player)
+                #print_player (player)
                 update_create_player(player, team.id)
 
             #ESPN.com for salary and college

@@ -36,6 +36,42 @@ body {
   background-color: #5983ab;
 }
 
+div.Celtics.item      { background-color: #008248;}
+div.Nets.item         { background-color: #222222;}
+div.Knicks.item       { background-color: #F37022;}
+div.76ers.item        { background-color: #BA9755;}
+div.Raptors.item      { background-color: #CE0F42;}
+
+div.Bulls.item        { background-color: #CE0F42;}
+div.Cavaliers.item    { background-color: #860038;}
+div.Pistons.item      { background-color: #ED174B;}
+div.Pacers.item       { background-color: #002E62;}
+div.Bucks.item        { background-color: #004811;}
+
+div.Hawks.item        { background-color: #E2373F;}
+div.Hornets.item      { background-color: #007486;}
+div.Heat.item         { background-color: #98012E;}
+div.Magic.item        { background-color: #017DC7;}
+div.Wizards.item      { background-color: #BC9A6A;}
+
+div.Warriors.item     { background-color: #005085;}
+div.Clippers.item     { background-color: #ED174B;}
+div.Lakers.item       { background-color: #542583;}
+div.Suns.item         { background-color: #3D2680;}
+div.Kings.item        { background-color: #724c9f;}
+
+div.Mavericks.item    { background-color: #006CB7;}
+div.Rockets.item      { background-color: #ED1C2B;}
+div.Grizzlies.item    { background-color: #B9D1EB;}
+div.Pelicans.item     { background-color: #0C2340;}
+div.Spurs.item        { background-color: #C6CDD3;}
+
+div.Nuggets.item      { background-color: #4B8FCC;}
+div.Timberwolves.item { background-color: #005085;}
+div.Thunder.item      { background-color: #002E62;}
+div.Blazers.item      { background-color: #E2373F;}
+div.Jazz.item         { background-color: #6CAEE0;}
+
 .carousel-control.left, .carousel-control.right {
     background-image: none
 }
@@ -52,6 +88,11 @@ body {
   margin: 9px 0;
   overflow: hidden;
   background-color: #e5e5e5;
+}
+
+.list-group-item.active{
+  background-color: #333;
+  border-color: #333;
 }
 
 .my-small-txt {
@@ -137,6 +178,16 @@ table.my-table-bordered {
 .my-table-bordered > tfoot > tr > td {
   border: 1px solid #000;
   text-align: center;
+}
+
+div.story-photo-credit {
+    text-align:right;
+    font-style:italic;
+    font-size:12px;
+    font-size:1.2rem;
+    color:#888;
+    margin-bottom:10px;
+    margin-top:5px
 }
 
 /*

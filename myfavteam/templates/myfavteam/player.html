@@ -10,7 +10,8 @@
     <div class="col-md-1"></div>
     <div class="col-md-3 my_player_img_col">
       {% if player.image %}
-        <img src="{{player.image.url}}"/>
+        <img src="{{player.image}}"/>
+        <div class="story-photo-credit">(photo: © nba.com)</div>
       {% else %}
         <img data-src="holder.js/290x300/auto/#5983ab:#fff/text: image">
       {% endif %}

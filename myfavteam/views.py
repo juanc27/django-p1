@@ -100,11 +100,14 @@ def player(request, player_id=1):
 
     player_id = int(player_id)
     p = PlayerList()
-    resp_dict['player'] = p.get_player(player_id)
+    resp_dict['player'] = player = p.get_player(player_id)
+    if player == None:
+        raise Http404
     try:
-        resp_dict['team_name'] = resp_dict['player'].team.short
+        resp_dict['team_name'] = player.team.short_name
+        resp_dict['team'] = player.team
     except:
-        resp_dict['team_name'] = resp_dict['player']['team']['short']
+        resp_dict['team_name'] = player['team']['short']
 
     st = StatsList()
     resp_dict['stats'] = st.get_player_stats(player_id)
@@ -334,7 +337,7 @@ class NewsList:
 
 class PlayerList:
     def __init__(self):
-        self.players = [{'team': {'short':'MyFavTeam'},
+        self.players = [{'team': {'short_name':'MyFavTeam'},
                          'first_name': 'John',
                          'last_name': 'Doe',
                          'position': {'name': 'Guard', 'acronym' : 'G'},
@@ -349,7 +352,7 @@ class PlayerList:
                          'jersey_number': 23,
                          'get_absolute_url': "/player/1/",
                         },
-                        {'team': {'short':'MyFavTeam'},
+                        {'team': {'short_name':'MyFavTeam'},
                          'first_name': 'David',
                          'last_name': 'Smith',
                          'position': {'name': 'Forward', 'acronym' : 'F'},
@@ -364,7 +367,7 @@ class PlayerList:
                          'jersey_number': 32,
                          'get_absolute_url': '/player/2/',
                         },
-                        {'team': {'short':'MyFavTeam'},
+                        {'team': {'short_name':'MyFavTeam'},
                          'first_name': 'Tim',
                          'last_name': 'Brown',
                          'position': {'name': 'Center', 'acronym' : 'C'},
