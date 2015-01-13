@@ -85,10 +85,10 @@ class Command(BaseCommand):
         teams = Team.objects.filter(my_team=True, league="NBA").order_by('created')
         for team in teams:
             #NBA.com
+            print("{} Roster".format(team.short_name))
             roster = getNBA_dot_com_Roster(team.short_name)
             create_positions(roster)
             for player in roster:
-                print("{} Roster".format(team.short_name))
                 #print_player (player)
                 update_create_player(player, team.id)
 

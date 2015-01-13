@@ -1,6 +1,9 @@
 beautifulsoup4==4.3.2
 BeautifulSoup==3.2.1
 Django==1.7.1
+dj-database-url==0.3.0
+dj-static==0.0.6
+gunicorn==19.0.0
 Pillow==2.6.1
 PyYAML==3.11
 cssselect==0.9.1
@@ -10,6 +13,8 @@ six==1.8.0
 jieba==0.35
 pytz==2014.10
 python-dateutil==2.4.0
+psycopg2==2.5.3
+wsgiref==0.1.2
 newspaper==0.0.9.1
 django-crontab==0.6.0
 django-tables2==0.15.0

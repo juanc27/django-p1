@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import dj_database_url
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -57,15 +58,21 @@ ROOT_URLCONF = 'mysite.urls'
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# Allow all host headers
+ALLOWED_HOSTS = ['*']
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'myfavteam.db',
-    }
+#this if for local use. comment in case you want to use postgresql
+    'default': { 'ENGINE': 'django.db.backends.sqlite3',
+                  'NAME': 'myfavteam.db',
+               }
+#Uncommnet in case you want to use postgresql
+#    'default' :  dj_database_url.config()
 }
 
 # Internationalization
@@ -89,6 +96,7 @@ TEMPLATE_DIRS = (
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'staticfiles'
 
 #Where to store image and file objects
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'myfavteam/media/')

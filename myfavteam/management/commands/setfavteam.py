@@ -16,8 +16,7 @@ def create_teams(teams, league):
                                     short_name = team['short'],
                                     league=league,
                                     conference=team['conf'],
-                                    division=team['div'],
-                                    primary_color = team['p_color'])
+                                    division=team['div'])
             except:
                 print "Error inserting Team {} ".format(team['name'])
                 raise

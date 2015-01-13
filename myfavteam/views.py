@@ -107,7 +107,7 @@ def player(request, player_id=1):
         resp_dict['team_name'] = player.team.short_name
         resp_dict['team'] = player.team
     except:
-        resp_dict['team_name'] = player['team']['short']
+        resp_dict['team_name'] = player['team']['short_name']
 
     st = StatsList()
     resp_dict['stats'] = st.get_player_stats(player_id)
