@@ -26,8 +26,9 @@ def link_player_with_news(news, team_id):
     for player in players:
         name = player.first_name + " " + player.last_name
         if news.text.find(name) > -1:
-            print "linking News {} with Player {}".format(news.title.encode('utf-8', 'replace'),
-                                                           name)
+            print "linking News {} with Player {}".format(
+                                                    news.title.encode('utf-8', 'replace'),
+                                                    name)
             try:
                 PlayerNews.objects.create(news_id = news.id, player_id = player.id)
             except:
@@ -42,12 +43,12 @@ def create_news(news, team_id, website_id):
         #create
         print "News = {} {} doesn't exist. Creating...".format(
                                     news['title'].encode('utf-8', 'replace'), news['link'])
-        try:
-            if news['date'] == None:
-                date = timezone.now()
-            else:
-                date = parse_datetime(news['date'])
+        if news['date'] == None:
+            date = timezone.now()
+        else:
+            date = parse_datetime(news['date'])
 
+        try:
             n = News.objects.create(team_id = team_id,
                                 website_id = website_id,
                                 title = news['title'],
@@ -59,7 +60,8 @@ def create_news(news, team_id, website_id):
                                 image = news['image'],
                                )
         except:
-            print"Error inserting {} - {}".format(news['title'], news['link'])
+            print"Error inserting {} - {}".format(news['title'].encode('utf-8', 'replace'), 
+                                                  news['link'])
             raise
 
         link_player_with_news(n, team_id)

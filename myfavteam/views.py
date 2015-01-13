@@ -451,14 +451,17 @@ class StandingList:
         return get_query_or_def_values(amount, query, ret_list)
 
     def get_standings_conf(self, tournament_id, conference, amount):
-        #django annotate doesn't support substraction
-        diff = Standings.objects.raw('SELECT *, MAX(wins-losses) AS max ' \
-                                     'FROM myfavteam_standings, myfavteam_team ' \
-                                     'WHERE myfavteam_standings.tournament_id = %s AND ' \
-                                           'myfavteam_team.conference = %s AND ' \
-                                           'myfavteam_standings.team_id = myfavteam_team.id', 
-                                     [tournament_id, conference])[0].max
-        if diff == None:
+        try :
+            best_pct = Standings.objects.extra(
+                        select = {'win_pct' : '1.0*wins/(wins + losses + 0.5*ties)'},
+                        where = ['tournament_id = %s',
+                                 'myfavteam_team.conference=%s',
+                                 'team_id=myfavteam_team.id'],
+                        params = [tournament_id, conference],
+                        tables = ['myfavteam_team'],
+                        order_by=['-win_pct'])[0]
+            diff = best_pct.wins - best_pct.losses
+        except:
             diff = 0
        
         query = Standings.objects.extra(
@@ -500,7 +503,9 @@ class StatsList(PlayerList):
                      'myfavteam_basketballplayerstats.steals_per_game AS steals_per_game ' \
                      'FROM myfavteam_player LEFT JOIN myfavteam_basketballplayerstats ' \
                      'ON myfavteam_player.id = myfavteam_basketballplayerstats.player_id '\
-                     'WHERE myfavteam_player.team_id = %s ORDER BY points_per_game DESC', 
+                     'WHERE myfavteam_player.team_id = %s AND ' \
+                     'myfavteam_player.id = myfavteam_basketballplayerstats.player_id '\
+                     'ORDER BY points_per_game DESC', 
                      [team_id])
 
         ret_list = list(self.players)

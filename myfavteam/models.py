@@ -10,7 +10,7 @@ class Team(models.Model):
     my_team = models.BooleanField(default = False)
     city = models.CharField(max_length=50, null=True, blank=True)
     description = models.CharField(max_length=255, blank=True)
-    image = models.ImageField(null=True,blank=True)
+    image = models.ImageField(null=True,blank=True, max_length=255)
     created = models.DateTimeField(auto_now_add=True)
     league = models.CharField(max_length=20, choices = (('NBA', 'NBA'),
                                                        ('MLB', 'MLB'),
@@ -69,7 +69,7 @@ class News(models.Model):
     author = models.CharField(max_length=100, null=True, blank=True)
     website = models.ForeignKey('Website')
     text = models.TextField()
-    image = models.ImageField(null=True, blank=True)
+    image = models.ImageField(null=True, blank=True, max_length=255)
     created = models.DateTimeField(auto_now_add=True)
     
     class Meta:
@@ -167,7 +167,7 @@ class Player(models.Model):
     height = models.FloatField(default=0.0)
     weight = models.FloatField(default=0.0)
     created = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(null=True, blank=True)
+    image = models.ImageField(null=True, blank=True, max_length=255)
     salary = models.IntegerField(default=0)
     college = models.CharField(max_length=100, null=True, blank=True)
 
@@ -221,7 +221,7 @@ class Roster(models.Model):
 
 class TeamPicture(models.Model):
     team = models.ForeignKey('Team')
-    image = models.ImageField()
+    image = models.ImageField(max_length=100)
     uploaded = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
@@ -231,7 +231,7 @@ class TeamPicture(models.Model):
 class Website(models.Model):
     name = models.CharField(max_length=50)
     link = models.CharField(max_length=200)
-    image = models.ImageField(null=True, blank=True)
+    image = models.ImageField(null=True, blank=True, max_length=100)
 
     def get_absolute_url(self):
         return u %'%s' % self.link

@@ -168,7 +168,7 @@ def getESPN_dot_com_team_news(team_short_name = None, visited_links = []):
             else:
                 author = article_soup.find("cite", class_ = "source")
                 if author != None:
-                    author = author.text
+                    author = author.text[:100]
             resp['author'] = author
         else:
             resp['author'] = article.authors[0]
@@ -283,5 +283,5 @@ def getNBA_dot_com_team_news(team_short_name = None, visited_links = []):
 
 if __name__ == "__main__":
 #    getESPN_dot_com_team_news("warriors")
-#    getESPN_dot_com_team_news("jazz")
+    getESPN_dot_com_team_news("heat")
     getNBA_dot_com_team_news("heat")

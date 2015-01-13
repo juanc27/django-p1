@@ -14,7 +14,9 @@ jieba==0.35
 pytz==2014.10
 python-dateutil==2.4.0
 psycopg2==2.5.3
-wsgiref==0.1.2
-newspaper==0.0.9.1
 django-crontab==0.6.0
 django-tables2==0.15.0
+nltk==3.0.1
+responses==0.3.0
+mock==1.0.1
+newspaper==0.0.9.1
