@@ -80,6 +80,8 @@
                      <img class="my_news_index_img"
                        {% if news.image %}
                          src="{{news.image}}"
+                       {% elif news.website.image %}
+                         src="{{news.website.image}}"
                        {% else %}
                          src="holder.js/90x62/auto/#444:#777/text: image"
                        {% endif%}

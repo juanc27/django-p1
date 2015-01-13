@@ -12,11 +12,12 @@
            <div class="row">
                <div class="col-md-2 my_news_img_col">
                    <a href="{{news.link}}">
-                      <!--  src="{{news.image.url}}" -->
                       <img 
                         class="my_news_img" 
                         {% if news.image %}
                           src="{{news.image}}"
+                        {% elif news.website.image %}
+                          src="{{news.website.image }}"
                         {% else %}
                           src="{{STATIC_URL}}holder.js/356x200/auto/#666:#999/text: image"
                         {% endif %}

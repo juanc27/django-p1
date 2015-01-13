@@ -8,6 +8,9 @@ from django.utils.dateparse import parse_datetime
 from django.conf import settings
 from django.utils import timezone
 
+nba_logo = "http://i.cdn.turner.com/nba/tmpl_asset/static/nba-cms3-homepage/1557/dep/nba-cms3-mobile/elements/apple-touch-icon.png"
+espn_logo = " http://a.espncdn.com/i/espn/espn_logos/espn_red.png" 
+
 def find_or_create_website(name, link, image):
     try:
         id = Website.objects.get(name=name).id
@@ -48,6 +51,10 @@ def create_news(news, team_id, website_id):
         else:
             date = parse_datetime(news['date'])
 
+        if news['image'] == news['link']:
+            #this shouldn't happen
+            news['image'] = None
+        
         try:
             n = News.objects.create(team_id = team_id,
                                 website_id = website_id,
@@ -76,14 +83,14 @@ class Command(BaseCommand):
         for team in teams:
             visited_links = News.objects.filter(team_id = team.id).values_list("link", flat=True)
             ##ESPN.com
-            website_id = find_or_create_website("espn", "http://espn.go.com", None)
+            website_id = find_or_create_website("espn", "http://espn.go.com", espn_logo)
             newss = getESPN_dot_com_team_news(team.short_name, visited_links)
             print("{} News by espn".format(team.short_name))
             for news in newss:
                 create_news(news, team.id, website_id)
 
             ##NBA.com
-            website_id = find_or_create_website("nba.com", "http://nba.com", None)
+            website_id = find_or_create_website("nba.com", "http://nba.com", nba_logo)
             newss = getNBA_dot_com_team_news(team.short_name, visited_links)
             print("{} News by nba.com".format(team.short_name))
             for news in newss:
