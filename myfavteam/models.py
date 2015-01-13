@@ -221,7 +221,7 @@ class Roster(models.Model):
 
 class TeamPicture(models.Model):
     team = models.ForeignKey('Team')
-    image = models.ImageField(max_length=100)
+    image = models.ImageField(max_length=255)
     uploaded = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
@@ -231,7 +231,7 @@ class TeamPicture(models.Model):
 class Website(models.Model):
     name = models.CharField(max_length=50)
     link = models.CharField(max_length=200)
-    image = models.ImageField(null=True, blank=True, max_length=100)
+    image = models.ImageField(null=True, blank=True, max_length=255)
 
     def get_absolute_url(self):
         return u %'%s' % self.link
