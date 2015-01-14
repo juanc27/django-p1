@@ -14,7 +14,6 @@
         </ol>
         <div class="carousel-inner" >
           <div class="item active {{team.short_name}}">
-            <!-img src="{{carousel_pic_0}}" alt="First slide">
             <div class="container">
               <div class="carousel-caption">
                 <p>Next Game</p>
@@ -29,7 +28,6 @@
             </div>
           </div>
           <div class="item {{team.short_name}}">
-            <!-img src="{{carousel_pic_1}}" alt="Second slide" height="500" width="1140">
             <div class="container">
               <div class="carousel-caption">
                   <h2><a class="a_no_color" href="{{latest_news.link}}">{{latest_news.title}}</a></h2>
@@ -38,7 +36,6 @@
             </div> 
           </div>
           <div class="item {{team.short_name}}">
-            <!-img src="{{carousel_pic_2}}" alt="Third slide" height="500" width="1140">
             <div class="container">
               <div class="carousel-caption">
                 <p>Last Result</p>
@@ -76,7 +73,6 @@
            <div class="row">
                <div class="col-md-3 my_news_img_col">
                    <a href="{{news.link}}">
-                     <!--  src="{{news.image.url}}" -->
                      <img class="my_news_index_img"
                        {% if news.image %}
                          src="{{news.image}}"

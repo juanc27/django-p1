@@ -46,6 +46,8 @@ def create_news(news, team_id, website_id):
         #create
         print "News = {} {} doesn't exist. Creating...".format(
                                     news['title'].encode('utf-8', 'replace'), news['link'])
+
+        #sanity checks
         if news['date'] == None:
             date = timezone.now()
         else:
@@ -54,7 +56,14 @@ def create_news(news, team_id, website_id):
         if news['image'] == news['link']:
             #this shouldn't happen
             news['image'] = None
-        
+
+        if news['author'] != None:
+            news['author'] = news['author'][:100]
+        if news['description'] != None:
+            news['description'] = news['description'][:255]
+        if news['title'] != None:
+            news['title'] = news['title'][:255]
+
         try:
             n = News.objects.create(team_id = team_id,
                                 website_id = website_id,

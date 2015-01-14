@@ -65,7 +65,7 @@ class News(models.Model):
     title = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
     date = models.DateTimeField()
-    link = models.CharField(max_length=500)
+    link = models.CharField(max_length=512)
     author = models.CharField(max_length=100, null=True, blank=True)
     website = models.ForeignKey('Website')
     text = models.TextField()
@@ -97,11 +97,11 @@ class Stadium(models.Model):
     # return reverse('myfavteam.views.team', args=[self.team_name])
 
 class Tournament(models.Model):
-    name = models.CharField(max_length=500)
+    name = models.CharField(max_length=512)
     league = models.CharField(max_length=20, choices = (('NBA', 'NBA'),
                                                        ('MLB', 'MLB'),
                                                        ('NFL', 'NFL')))
-    standings_link = models.CharField(max_length=500, null=True, blank=True)
+    standings_link = models.CharField(max_length=512, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     start_date = models.DateField(auto_now_add=True)
     end_date = models.DateField(default='2025-12-01')
@@ -124,7 +124,7 @@ class Schedule(models.Model):
     team_against_score = models.IntegerField(default=0)
     is_home = models.BooleanField(default=True)
     date = models.DateTimeField()
-    recap_link =  models.CharField(max_length=500, null=True, blank=True) 
+    recap_link =  models.CharField(max_length=512, null=True, blank=True) 
     
     class Meta:
         ordering = ['-date']

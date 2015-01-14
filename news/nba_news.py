@@ -168,7 +168,7 @@ def getESPN_dot_com_team_news(team_short_name = None, visited_links = []):
             else:
                 author = article_soup.find("cite", class_ = "source")
                 if author != None:
-                    author = author.text[:100]
+                    author = author.text
             resp['author'] = author
         else:
             resp['author'] = article.authors[0]
