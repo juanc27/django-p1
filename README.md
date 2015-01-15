@@ -1,3 +1,7 @@
+<snippet>
+  <content><![CDATA[
+# ${1:Project Name}
+
 MyFavTeam App
 =============
 
@@ -58,4 +62,6 @@ Many thanks for to the creators of these very usefull python libraries:
 
 # License
 MIT License
-
+]]></content>
+  <tabTrigger>readme</tabTrigger>
+</snippet>
