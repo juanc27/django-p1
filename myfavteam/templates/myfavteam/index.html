@@ -16,21 +16,27 @@
           <div class="item active {{team.short_name}}">
             <div class="container">
               <div class="carousel-caption">
-                <p>Next Game</p>
                 {% if next_game.is_home %}
-                  <h2>{{next_game.team}} vs {{next_game.team_against}}</h2>
+                  <h2>Next Game: {{next_game.team_against}} @ {{next_game.team}}</h2>
                 {% else %}
-                  <h2>{{next_game.team_against}} vs {{next_game.team}}</h2>
+                  <h2>Next Game: {{next_game.team}} @ {{next_game.team_against}}</h2>
                 {% endif %}
-                <p>{{next_game.date}}</p> 
-                <p>{{next_game.stadium.name}}, {{next_game.stadium.city}}</p>
+                <p>{{next_game.date|date:"D M/d"}} - {{next_game.stadium.name}}</p> 
               </div>
             </div>
           </div>
           <div class="item {{team.short_name}}">
             <div class="container">
               <div class="carousel-caption">
-                  <h2><a class="a_no_color" href="{{latest_news.link}}">{{latest_news.title}}</a></h2>
+                  <h1
+                    {% if latest_news.title|length < 40 %} 
+                      class="my_size1"
+                    {% elif latest_news.title|length < 80 %}
+                      class="my_size2"
+                    {% else %}
+                      class="my_size3"
+                    {% endif %}
+                    ><a class="a_no_color" href="{{latest_news.link}}">{{latest_news.title}}</a></h1>
                   <p><a class="a_no_color" href="{{latest_news.website.link}}">{{latest_news.website.name}}</a></p>
               </div>
             </div> 
@@ -38,14 +44,12 @@
           <div class="item {{team.short_name}}">
             <div class="container">
               <div class="carousel-caption">
-                <p>Last Result</p>
                 {% if last_game.is_home %}
-                  <h2>{{last_game.team}} {{last_game.team_score}} : {{last_game.team_against}} {{last_game.team_against_score}}</h2>
+                  <h2>Last Score: {{last_game.team_against}} {{last_game.team_against_score}} : {{last_game.team}} {{last_game.team_score}}</h2>
                 {% else %}
-                  <h2>{{last_game.team_against}} {{last_game.team_against_score}} : {{last_game.team}} {{last_game.team_score}}</h2>
+                  <h2>Last Score: {{last_game.team}} {{last_game.team_score}} : {{last_game.team_against}} {{last_game.team_against_score}}</h2>
                 {% endif %}
-                <p>{{last_game.date}}</p>
-                <p>{{last_game.stadium.name}}, {{last_game.stadium.city}}</p>
+                <p>{{last_game.date|date:"D M/d"}} - {{last_game.stadium.name}}</p>
               </div>
             </div> 
           </div>

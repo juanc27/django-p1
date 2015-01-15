@@ -190,6 +190,28 @@ div.story-photo-credit {
     margin-top:5px
 }
 
+h1.my_size1 {
+    font-size: 2em;
+}
+h1.my_size2 {
+    font-size: 2em;
+}
+h1.my_size3 {
+    font-size: 2em;
+}
+
+@media only screen and (max-device-width: 767px) { 
+    h1.my_size1 {
+        font-size: 200%;
+    }
+    h1.my_size2 {
+        font-size: 150%;
+    }
+    h1.my_size3 {
+        font-size: 125%;
+    }
+}
+
 /*
 //Debuging purposes
 .row {

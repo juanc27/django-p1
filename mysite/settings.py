@@ -67,12 +67,11 @@ ALLOWED_HOSTS = ['*']
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
 DATABASES = {
-#this if for local use. comment in case you want to use postgresql
-    'default': { 'ENGINE': 'django.db.backends.sqlite3',
-                  'NAME': 'myfavteam.db',
-               }
-#Uncommnet in case you want to use postgresql
-#    'default' :  dj_database_url.config()
+    'default' :  dj_database_url.config()
+#this if for local use. uncomment in case you want to use sqlite locally
+#    'default': { 'ENGINE': 'django.db.backends.sqlite3',
+#                  'NAME': 'myfavteam.db',
+#               }
 }
 
 # Internationalization
