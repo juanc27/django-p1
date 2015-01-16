@@ -11,7 +11,6 @@ Installation on heroku
 ----------------------
 ```
  $ git clone https://github.com/juanc27/myfavteam.git <your_dir>
-
  $ cd <your_dir>
 
  $ heroku create <your_project_name>
