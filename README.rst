@@ -10,7 +10,6 @@ As of now it only support nba teams but soon NFL and MLB.
 Installation on heroku
 ----------------------
 
-.. code-block:: pycon
     $ git clone https://github.com/juanc27/myfavteam.git <your_dir>
     $ cd <your_dir>
     $ heroku create <your_project_name>
@@ -23,7 +22,6 @@ Installation on heroku
 Installation on your local unix/mac
 ----------------------------------
 
-.. code-block:: pycon
     $ git clone https://github.com/juanc27/myfavteam.git <your_dir>
     $ cd <your_dir>
     $ pip install -r requirements # feel free to setup virtualenv before this step
