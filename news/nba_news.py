@@ -40,9 +40,9 @@ def print_article_dict(dict):
             print "keywords: {}".format(value)
             continue
         if value != None:
-            print "{}: {} ". format(field, value.encode('utf-8', 'replace')),
+            print "{}: {} ". format(field, value.encode('utf-8', 'replace'))
         else:
-            print "{}: {} ". format(field, value),
+            print "{}: {} ". format(field, value)
 
 """ search string for timezone keywords lind PT and return a the date formated with timezone
 """
