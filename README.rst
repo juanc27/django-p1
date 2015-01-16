@@ -10,28 +10,30 @@ As of now it only support nba teams but soon NFL and MLB.
 Installation on heroku
 ----------------------
 
-    $ git clone https://github.com/juanc27/myfavteam.git <your_dir>
-    $ cd <your_dir>
-    $ heroku create <your_project_name>
-    $ git push heroku master
-    $ heroku run python manage.py syncdb
-    $ heroku run python manage.py setfavteam #here you get to pick your fav team, you can run it multiple times if you want more than one fav team
-    $ heroku run ./collect_data.sh # This populates the db with all data, roster, etc.
-    $ heroku open
+.. code-block:: sh
+    git clone https://github.com/juanc27/myfavteam.git <your_dir>
+    cd <your_dir>
+    heroku create <your_project_name>
+    git push heroku master
+    heroku run python manage.py syncdb
+    heroku run python manage.py setfavteam #here you get to pick your fav team, you can run it multiple times if you want more than one fav team
+    heroku run ./collect_data.sh # This populates the db with all data, roster, etc.
+    heroku open
 
 Installation on your local unix/mac
 ----------------------------------
 
-    $ git clone https://github.com/juanc27/myfavteam.git <your_dir>
-    $ cd <your_dir>
-    $ pip install -r requirements # feel free to setup virtualenv before this step
-    $ vi mysite/settings.py #Optional. Change DATABASE to setup your local db as sqlite3 or as you wish
-    $ python manage.py syncdb
-    $ ./manage.py setfavteam #here you get to pick your fav team, you can run it
+.. code-block:: sh
+    git clone https://github.com/juanc27/myfavteam.git <your_dir>
+    cd <your_dir>
+    pip install -r requirements # feel free to setup virtualenv before this step
+    vi mysite/settings.py #Optional. Change DATABASE to setup your local db as sqlite3 or as you wish
+    python manage.py syncdb
+    ./manage.py setfavteam #here you get to pick your fav team, you can run it
  multiple times if you want more than one fav team
-    $ ./collect_data.sh # This populates the db with all data: roster, stats, etc.
-    $ ./manage.py runserver
-    $ open web browser at http://127.0.0.1:8000/
+    ./collect_data.sh # This populates the db with all data: roster, stats, etc.
+    ./manage.py runserver
+    open web browser at http://127.0.0.1:8000/
 
 History
 -------
